@@ -4,9 +4,10 @@ import {IPermission} from "../../types/user.type";
 
 const permissionSchema = new Schema(
     {
-        _brandId: {
+        _roleId: {
             type: Types.ObjectId,
-            ref: "brand"
+            ref: "role",
+            required: true
         },
         name: {
             type: String,
