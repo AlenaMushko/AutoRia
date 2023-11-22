@@ -1,0 +1,18 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "SWAGGER FOR AutoRia clone",
+    "version": "1.0.0",
+    "title": "AutoRia clone",
+    "contact": {
+      "email": "myshko.alona@gmail.com"
+    }
+  },
+  "paths":{
+
+  },
+  "definitions": {
+
+  }
+
+}
