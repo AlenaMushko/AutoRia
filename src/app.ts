@@ -8,6 +8,7 @@ import { authRouter, carRouter, userRouter } from "./routers";
 import { roleRouter } from "./routers/roles.router";
 import { initializeAdmin } from "./utils/createAdmin";
 import * as swaggerJson from "./utils/swagger.json";
+import {cronRunner} from "./cronns";
 
 const app = express();
 app.use(express.json());
@@ -31,6 +32,8 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 });
 
 app.listen(PORT, async () => {
+  cronRunner();
+
   if (typeof configs.DB_URI === "string") {
     await mongoose.connect(configs.DB_URI);
 

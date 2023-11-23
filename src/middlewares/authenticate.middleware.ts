@@ -4,7 +4,7 @@ import { JwtPayload } from "jsonwebtoken";
 
 import { configs } from "../config";
 import { ApiError } from "../errors";
-import { userRepository, tokenRepository } from "../repositories";
+import { tokenRepository, userRepository } from "../repositories";
 
 const tokenSecret = configs.ACCESS_TOKEN_SECRET;
 

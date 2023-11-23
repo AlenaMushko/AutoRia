@@ -14,7 +14,7 @@ export interface IUser extends Document {
   actionToken?: string;
 }
 
-export interface IRole extends Document{
+export interface IRole extends Document {
   name: string;
   permission: {
     [key: string]: boolean;

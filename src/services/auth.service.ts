@@ -1,7 +1,12 @@
 import { EEmailAction } from "../enums";
 import { ApiError } from "../errors";
-import {EActionActivatedTokenTypes} from "../models";
-import { authRepository, userRepository, tokenRepository } from "../repositories";
+import { EActionActivatedTokenTypes } from "../models";
+import {
+  authRepository,
+  tokenRepository,
+  userRepository,
+} from "../repositories";
+import { roleRepository } from "../repositories/role.repository";
 import {
   IActivated,
   IChangePassword,
@@ -13,7 +18,6 @@ import {
 import { emailService } from "./email.service";
 import { passwordService } from "./password.service";
 import { tokenService } from "./token.service";
-import {roleRepository} from "../repositories/role.repository";
 
 class AuthService {
   public async register(body: IUser): Promise<void> {
@@ -26,7 +30,9 @@ class AuthService {
       const { password } = body;
       const hashadPassword = await passwordService.hash(password);
 
-      const {_id} = await roleRepository.getOneByParams({name: body._roleId})
+      const { _id } = await roleRepository.getOneByParams({
+        name: body._roleId,
+      });
 
       Promise.all([
         await authRepository.register(body, hashadPassword, _id),
@@ -40,7 +46,7 @@ class AuthService {
       await emailService.sendEmail(body.email, EEmailAction.REGISTER, {
         name: body.name + ", " || " ",
         actionToken,
-    });
+      });
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }

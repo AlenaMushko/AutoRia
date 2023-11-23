@@ -3,12 +3,16 @@ import { Activated, User } from "../models";
 import { IActivated, ITokenPayload, IUser } from "../types";
 
 class AuthRepository {
-  public async register(body: IUser, hashadPassword: string, _roleId: string): Promise<IUser> {
+  public async register(
+    body: IUser,
+    hashadPassword: string,
+    _roleId: string,
+  ): Promise<IUser> {
     try {
       return await User.create({
         ...body,
         password: hashadPassword,
-        _roleId
+        _roleId,
       });
     } catch (e) {
       throw new ApiError(e.message, e.status);

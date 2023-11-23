@@ -5,10 +5,10 @@ import { IRole } from "../types";
 class RoleService {
   public async create(dto: IRole): Promise<IRole> {
     try {
-        const role = await roleRepository.getOneByParams({name: dto.name});
-     if(role){
-       throw new ApiError("Such a role already exists", 404);
-     }
+      const role = await roleRepository.getOneByParams({ name: dto.name });
+      if (role) {
+        throw new ApiError("Such a role already exists", 404);
+      }
 
       return await roleRepository.create(dto);
     } catch (err) {
@@ -16,20 +16,20 @@ class RoleService {
     }
   }
 
-  public async findById( roleId: string): Promise<IRole> {
+  public async findById(roleId: string): Promise<IRole> {
     try {
-      const role = await roleRepository.getOneByParams({_id: roleId})
+      const role = await roleRepository.getOneByParams({ _id: roleId });
       return role;
     } catch (err) {
       throw new ApiError(err.message, err.status);
     }
   }
 
-  public async updateById(roleId:string, dto: IRole): Promise<IRole> {
+  public async updateById(roleId: string, dto: IRole): Promise<IRole> {
     try {
-      const  updatedRole = await roleRepository.updateById(roleId, dto)
+      const updatedRole = await roleRepository.updateById(roleId, dto);
 
-      return  updatedRole;
+      return updatedRole;
     } catch (err) {
       throw new ApiError(err.message, err.status);
     }

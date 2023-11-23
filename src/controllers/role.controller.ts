@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import { roleService } from "../services/role.service";
-import {IMessage, IRole} from "../types";
+import { IMessage, IRole } from "../types";
 
 class RoleController {
   public async create(
@@ -26,8 +26,8 @@ class RoleController {
     next: NextFunction,
   ): Promise<Response<IRole>> {
     try {
-      const {roleId} = req.params;
-     const role = await roleService.findById(roleId)
+      const { roleId } = req.params;
+      const role = await roleService.findById(roleId);
       return res.status(200).json(role);
     } catch (error) {
       next(error);
@@ -40,10 +40,10 @@ class RoleController {
     next: NextFunction,
   ): Promise<Response<IRole>> {
     try {
-      const {roleId} = req.params;
+      const { roleId } = req.params;
       const updatedRole = await roleService.updateById(roleId, req.body);
 
-      return res.status(200).json({ message: "User is updated", updatedRole});
+      return res.status(200).json({ message: "User is updated", updatedRole });
     } catch (e) {
       next(e);
     }
@@ -55,9 +55,9 @@ class RoleController {
     next: NextFunction,
   ): Promise<Response<IMessage>> {
     try {
-      const {roleId} = req.params;
+      const { roleId } = req.params;
       await roleService.deleteById(roleId);
-      return res.status(200).json({ message: "User is deleted"});
+      return res.status(200).json({ message: "User is deleted" });
     } catch (e) {
       next(e);
     }

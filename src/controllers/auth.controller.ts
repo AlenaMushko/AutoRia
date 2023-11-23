@@ -148,7 +148,7 @@ class AuthController {
       const token = res.locals.tokenModel;
       await tokenService.logout(token._id);
 
-      return res.status(204).json( "Logout success");
+      return res.status(204).json("Logout success");
     } catch (e) {
       next(e);
     }

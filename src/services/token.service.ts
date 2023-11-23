@@ -3,7 +3,7 @@ import * as jwt from "jsonwebtoken";
 import { configs } from "../config";
 import { ApiError } from "../errors";
 import { EActionActivatedTokenTypes } from "../models";
-import { userRepository, tokenRepository  } from "../repositories";
+import { tokenRepository, userRepository } from "../repositories";
 import { IJwt, ITokenPayload, ITokensPair, IUser } from "../types";
 
 const accessTokenSecret = configs.ACCESS_TOKEN_SECRET;

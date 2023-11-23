@@ -7,11 +7,13 @@ const userSchema = new Schema(
   {
     name: {
       type: String,
+      set: (v: string) => v.trim(),
       min: [3, "Name min 3 symbols"],
       max: [30, "Name max 30 symbols"],
     },
     email: {
       type: String,
+        set: (v: string) => v.trim().toLowerCase(),
       unique: true,
       trim: true,
       lowercase: true,
@@ -19,21 +21,25 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+        set: (v: string) => v.trim(),
+        required: [true, "Password is required"],
     },
     _roleId: {
       type: Types.ObjectId,
-      ref: "role",
+        set: (v: string) => v.trim(),
+        ref: "role",
       required: [true, "Role is required"],
     },
     _dealershipId: {
       type: Types.ObjectId,
-      ref: "dealership",
+        set: (v: string) => v.trim(),
+        ref: "dealership",
       default: null,
     },
     account: {
       type: String,
-      enum: EAccounts,
+        set: (v: string) => v.trim().toLowerCase(),
+        enum: EAccounts,
       default: EAccounts.Base,
       required: [true, "Account is required"],
     },
