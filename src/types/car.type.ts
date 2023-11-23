@@ -1,10 +1,9 @@
-
-import {Document, Types} from 'mongoose';
+import { Document, Types } from "mongoose";
 
 export interface ICar extends Document {
   _userId: Types.ObjectId;
-  photo?:  string | string[];
-  video?:  string | string[];
+  photo?: string | string[];
+  video?: string | string[];
   type: string;
   _brandId: Types.ObjectId;
   _modelId: Types.ObjectId;
@@ -18,12 +17,11 @@ export interface ICar extends Document {
   status: string;
 }
 
-export interface IModel{
-  _brandId:Types.ObjectId;
-  name: string
+export interface IModel {
+  _brandId: Types.ObjectId;
+  name: string;
 }
 
-export interface IBrand{
-  name: string
+export interface IBrand {
+  name: string;
 }
-

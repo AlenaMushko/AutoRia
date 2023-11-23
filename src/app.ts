@@ -5,6 +5,8 @@ import * as swaggerUi from "swagger-ui-express";
 
 import { configs } from "./config";
 import { authRouter, carRouter, userRouter } from "./routers";
+import { roleRouter } from "./routers/roles.router";
+import { initializeAdmin } from "./utils/createAdmin";
 import * as swaggerJson from "./utils/swagger.json";
 
 const app = express();
@@ -14,9 +16,10 @@ app.use(fileUpload());
 
 const PORT = configs.PORT;
 
+app.use("/roles", roleRouter);
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
-app.use("/cars", carRouter)
+app.use("/cars", carRouter);
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerJson));
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
@@ -27,9 +30,11 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   if (typeof configs.DB_URI === "string") {
-    mongoose.connect(configs.DB_URI);
+    await mongoose.connect(configs.DB_URI);
+
+    await initializeAdmin();
   } else {
     console.error("DB_URI is not defined!");
     process.exit(1);

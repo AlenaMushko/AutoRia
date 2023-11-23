@@ -1,22 +1,22 @@
-import {model, Schema, Types} from "mongoose";
+import { model, Schema, Types } from "mongoose";
 
-import {IModel} from "../../types";
+import { IModel } from "../../types";
 
 const modelSchema = new Schema(
-    {
-        _brandId: {
-            type: Types.ObjectId,
-            ref: "brand"
-        },
-        name: {
-            type: String,
-            required: [true, "Name is required"]
-        },
+  {
+    _brandId: {
+      type: Types.ObjectId,
+      ref: "brand",
     },
-    {
-        timestamps: true,
-        versionKey: false,
+    name: {
+      type: String,
+      required: [true, "Name is required"],
     },
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+  },
 );
 
 export const Model = model<IModel>("model", modelSchema);

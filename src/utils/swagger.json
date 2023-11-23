@@ -8,11 +8,183 @@
       "email": "myshko.alona@gmail.com"
     }
   },
-  "paths":{
-
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "summary": "Register new User",
+        "description": "Create a new user account.",
+        "responses": {
+          "201": {
+            "description": "User created",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "409": {
+            "description": "Email already exists"
+          }
+        }
+      }
+    },
+    "/auth/activated/:actionToken": {
+      "get": {
+        "summary": "Activate User Account",
+        "description": "Activates user account using the provided action token.",
+        "responses": {
+          "200": {
+            "description": "User successfully activated",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/auth/activated": {
+      "post": {
+        "summary": "Resend Activation Email",
+        "description": "Resends the activation email if the original was lost.",
+        "responses": {
+          "200": {
+            "description": "Activation email resent successfully"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    },
+    "/auth/forgotPassword": {
+      "post": {
+        "summary": "Forgot Password",
+        "description": "Initiates password reset process for the user.",
+        "responses": {
+          "200": {
+            "description": "Password reset email sent successfully"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    },
+    "/auth/change-password": {
+      "post": {
+        "summary": "Change Password",
+        "description": "Changes password for the logged-in user.",
+        "responses": {
+          "200": {
+            "description": "Password changed successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    },
+    "/auth/reset-password/:resetToken": {
+      "get": {
+        "summary": "Reset Password",
+        "description": "Resets password using a valid reset token.",
+        "responses": {
+          "200": {
+            "description": "Password reset successfully"
+          },
+          "400": {
+            "description": "Invalid reset token"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "User Login",
+        "description": "Login with email and password.",
+        "responses": {
+          "200": {
+            "description": "User successfully logged in",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid credentials"
+          }
+        }
+      }
+    },
+    "/auth/refreshToken": {
+      "post": {
+        "summary": "Refresh Token",
+        "description": "Refreshes authentication tokens.",
+        "responses": {
+          "200": {
+            "description": "Token refreshed successfully"
+          },
+          "401": {
+            "description": "Unauthorized or invalid token"
+          }
+        }
+      }
+    },
+    "/auth/current": {
+      "get": {
+        "summary": "Current User",
+        "description": "Gets information about the currently logged-in user.",
+        "responses": {
+          "200": {
+            "description": "Current user information",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "delete": {
+        "summary": "User Logout",
+        "description": "Logs out the current user.",
+        "responses": {
+          "200": {
+            "description": "User logged out successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
   },
   "definitions": {
-
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "email": {"type": "string"},
+        "password": {"type": "string"},
+        "verify": {"type": "boolean"},
+        "_roleId": {"type": "string"},
+        "_dealershipId": {"type": "string", "nullable": true},
+        "account": {"type": "string", "enum": ["base", "premium"]},
+        "lastVisited": {"type": "string", "format": "date-time"}
+      },
+      "required": ["email", "password"]
+    }
   }
-
 }
