@@ -1,0 +1,13 @@
+MailQueue:
+  Type: AWS::SQS::Queue
+  Properties:
+    QueueName: ${self:custom.mailQueue.name}
+Outputs:
+  MailQueueArn:
+    Value: !GetAtt MailQueue.Arn
+    Export:
+      Name: !Sub "${self:custom.mailQueue.name}-Arn"
+  MailQueueUrl:
+    Value: !Ref MailQueue
+    Export:
+      Name: !Sub "${self:custom.mailQueue.name}-Url"

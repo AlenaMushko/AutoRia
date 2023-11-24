@@ -1,0 +1,81 @@
+service: serverless
+frameworkVersion: "3"
+
+plugins:
+  - serverless-offline
+  - serverless-esbuild
+  - serverless-dotenv-plugin
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+#    MAIL_QUEUE_URL: ${self:custom.mailQueue.url}
+  stage: ${opt:stage, 'dev'}
+#  iamRoleStatements:
+#    - ${file(iam/SendMail.yml):SendMailAIM}
+#    - ${file(iam/MailQueueIAM.yml):MailQueueIAM}
+
+custom:
+  dotenv:
+    path: ../.env
+  esbuild:
+    bundle: true
+    minify: true
+    sourcemap: true
+    exclude: [ 'aws-sdk' ]
+    target: 'es2020'
+#    mailQueue:
+#      name: MailQueue-${self:provider.stage}
+#      arn: 'arn:aws:sqs:eu-west-1:173045083675:MailQueue-dev'
+#      url: 'https://sqs.eu-west-1.amazonaws.com/173045083675/MailQueue-dev'
+
+
+functions:
+  signUp:
+#    handler: src/handlers/user/signUp.handler
+#    events:
+#      - httpApi:
+#          path: /auth/sign-up
+#          method: POST
+
+  cronOldTokensRemover:
+    handler: src/handlers/user/cronOldTokensRemover.handler
+    events:
+      - schedule:
+          rate: cron(0 3 ? * MON *)
+          enabled: false
+
+#resources:
+#  Resources:
+#    NewResource:
+#      Type: AWS::S3::Bucket
+#      Properties:
+#        BucketName: my-new-bucket
+#  Outputs:
+#    MailQueueArn: ${file(resources/MailQueue.yml):Outputs.MailQueueArn}
+#    MailQueueUrl: ${file(resources/MailQueue.yml):Outputs.MailQueueUrl}
+
+
+# you can add statements to the Lambda function's IAM Role here
+#  iam:
+#    role:
+#      statements:
+#        - Effect: "Allow"
+#          Action:
+#            - "s3:ListBucket"
+#          Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+#        - Effect: "Allow"
+#          Action:
+#            - "s3:PutObject"
+#          Resource:
+#            Fn::Join:
+#              - ""
+#              - - "arn:aws:s3:::"
+#                - "Ref" : "ServerlessDeploymentBucket"
+#                - "/*"
+
+# you can define service wide environment variables here
+#  environment:
+#    variable1: value1

@@ -8,6 +8,8 @@
     "watch:server": "nodemon 'src/app.ts' --watch './src'",
     "lint": "eslint 'src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint 'src/**/*.{js,ts,tsx}' --fix",
+    "start:offline": "cd serverless sls offline",
+    "deploy": "cd serverless && sls deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -43,6 +45,7 @@
     "nodemailer-express-handlebars": "^6.1.0",
     "nodemon": "^3.0.1",
     "rimraf": "^5.0.5",
+    "serverless-dotenv-plugin": "^6.0.0",
     "swagger-ui-express": "^5.0.0",
     "ts-node": "^10.9.1",
     "ts-watch": "^1.0.8"
@@ -62,6 +65,8 @@
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
+    "serverless-esbuild": "^1.49.0",
+    "serverless-offline": "^13.3.0",
     "ts": "^0.0.0",
     "tsc-watch": "^6.0.4"
   }

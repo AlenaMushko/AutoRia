@@ -4,11 +4,11 @@ import * as mongoose from "mongoose";
 import * as swaggerUi from "swagger-ui-express";
 
 import { configs } from "./config";
+import { cronRunner } from "./cronns";
 import { authRouter, carRouter, userRouter } from "./routers";
 import { roleRouter } from "./routers/roles.router";
 import { initializeAdmin } from "./utils/createAdmin";
 import * as swaggerJson from "./utils/swagger.json";
-import {cronRunner} from "./cronns";
 
 const app = express();
 app.use(express.json());
