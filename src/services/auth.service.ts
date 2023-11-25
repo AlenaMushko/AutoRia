@@ -35,7 +35,7 @@ class AuthService {
       });
 
       Promise.all([
-        await authRepository.register(body, hashadPassword, _id),
+        await authRepository.register(body, hashadPassword, _id.toString()),
         await authRepository.actionToken(
           body,
           actionToken,
@@ -75,6 +75,7 @@ class AuthService {
         userId: user._id,
         name: user.name,
       });
+
       Promise.all([
         await tokenRepository.createToken({ ...tokensPair, _userId: user._id }),
         await userRepository.updateByIdPatch(user._id, {

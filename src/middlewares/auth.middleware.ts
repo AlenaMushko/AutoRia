@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
+import { ERoles } from "../enums";
 import { ApiError } from "../errors";
 import { Role } from "../models";
 import { authRepository, userRepository } from "../repositories";
@@ -7,6 +8,22 @@ import { passwordService } from "../services";
 
 class AuthMiddleware {
   public async uniqueEmail(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userRole = req.body._roleId;
+      if (userRole === ERoles.Admin || userRole === ERoles.Manager) {
+        throw new ApiError(
+          "You can not create user with role 'Admin' and 'Manager'",
+          409,
+        );
+      }
+
+      next();
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async permissionRole(req: Request, res: Response, next: NextFunction) {
     try {
       const user = await authRepository.findOne(req.body.email);
       if (user) {

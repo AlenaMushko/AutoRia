@@ -13,6 +13,7 @@ const router = Router();
 router.post(
   "/register",
   commonMiddleware.isBodyValid(userSchema.create),
+  authMiddleware.permissionRole,
   authMiddleware.uniqueEmail,
   authController.register,
 );

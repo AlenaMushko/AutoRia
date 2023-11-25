@@ -36,7 +36,6 @@ const userSchema = new Schema(
     },
     account: {
       type: String,
-      set: (v: string) => v.trim().toLowerCase(),
       enum: EAccounts,
       default: EAccounts.Base,
       required: [true, "Account is required"],
