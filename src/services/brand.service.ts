@@ -2,8 +2,8 @@ import { ApiError } from "../errors";
 import { brandRepository } from "../repositories/brand.repository";
 import { IBrand } from "../types";
 
-class BrandService{
-  public async findAll(): Promise<IBrand[]>{
+class BrandService {
+  public async findAll(): Promise<IBrand[]> {
     try {
       return await brandRepository.findAll();
     } catch (e) {
@@ -26,7 +26,6 @@ class BrandService{
       throw new ApiError(e.message, e.status);
     }
   }
-
 }
 
 export const brandService = new BrandService();

@@ -21,4 +21,8 @@ export const templates = {
     templateName: "cron-hello",
     subject: "Hello, we mees you",
   },
+  [EEmailAction.PROFANITY]: {
+    templateName: "profanity-car",
+    subject: "The description contains inappropriate words. Please fix it",
+  },
 };

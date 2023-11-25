@@ -50,7 +50,7 @@ router.put(
 
 router.delete(
   "/:userId",
-authMiddleware.isMyRole(ERoles.Admin),
+  authMiddleware.isMyRole(ERoles.Admin),
   commonMiddleware.isIdValid("userId"),
   userMiddleware.findByIdByThrow,
   userController.deleteById,

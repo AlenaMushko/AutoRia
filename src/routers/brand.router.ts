@@ -1,7 +1,13 @@
 import { Router } from "express";
+
 import { brandController } from "../controllers/brand.controller";
 import { ERoles } from "../enums";
-import { authenticateMiddleware, authMiddleware, carMiddleware, commonMiddleware } from "../middlewares";
+import {
+  authenticateMiddleware,
+  authMiddleware,
+  carMiddleware,
+  commonMiddleware,
+} from "../middlewares";
 import { brandSchema } from "../validations/brandValidation";
 
 const router = Router();
@@ -15,10 +21,7 @@ router.post(
   brandController.create,
 );
 
-router.get(
-  "/",
-  brandController.findAll,
-);
+router.get("/", brandController.findAll);
 
 router.get(
   "/:brandId",

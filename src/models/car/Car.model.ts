@@ -42,7 +42,7 @@ const carSchema = new Schema(
       min: [3, "Name min 3 symbols"],
       max: [500, "Name max 500 symbols"],
     },
-    isNewCar: {
+    isNew: {
       type: Boolean,
       required: [true, "Is car new?"],
     },
@@ -52,7 +52,7 @@ const carSchema = new Schema(
       max: [30, "Name max 30 symbols"],
       required: [true, "Region is required"],
     },
-    town: {
+    city: {
       type: String,
       min: [3, "Name min 3 symbols"],
       max: [30, "Name max 30 symbols"],

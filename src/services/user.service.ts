@@ -83,17 +83,21 @@ class UserService {
     }
   }
 
-  public async updateById(userId: string, user: IUser, value: Partial<IUser>): Promise<IUser> {
+  public async updateById(
+    userId: string,
+    user: IUser,
+    value: Partial<IUser>,
+  ): Promise<IUser> {
     try {
       const { _id } = await roleRepository.getOneByParams({
         name: value._roleId,
       });
       const _roleId: string = _id.toString();
       const lastVisited = new Date();
-      const updatedValue = {...value, _roleId, lastVisited}
+      const updatedValue = { ...value, _roleId, lastVisited };
       const updatedUser = Object.assign(user, updatedValue);
 
-      return await userRepository.updateById(userId, updatedUser, );
+      return await userRepository.updateById(userId, updatedUser);
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }
@@ -101,7 +105,7 @@ class UserService {
 
   public async deleteById(userId: string): Promise<void> {
     try {
-       await userRepository.deleteById(userId);
+      await userRepository.deleteById(userId);
       return;
     } catch (e) {
       throw new ApiError(e.message, e.status);

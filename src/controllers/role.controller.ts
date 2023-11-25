@@ -43,7 +43,9 @@ class RoleController {
       const { roleId } = req.params;
       const updatedRole = await roleService.updateById(roleId, req.body);
 
-      return res.status(200).json({ message: "User is updated", data: updatedRole });
+      return res
+        .status(200)
+        .json({ message: "User is updated", data: updatedRole });
     } catch (e) {
       next(e);
     }

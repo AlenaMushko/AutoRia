@@ -65,13 +65,11 @@ class CarMiddleware {
       next(e);
     }
   }
-  public async isBrand( req: Request,
-                        res: Response,
-                        next: NextFunction,){
+  public async isBrand(req: Request, res: Response, next: NextFunction) {
     try {
       const brand = await brandRepository.findOne(req.body.name);
-      if(brand){
-        throw new ApiError('Brand already exists', 409)
+      if (brand) {
+        throw new ApiError("Brand already exists", 409);
       }
       next();
     } catch (e) {
@@ -79,14 +77,29 @@ class CarMiddleware {
     }
   }
 
-  public async isModel( req: Request,
-                        res: Response,
-                        next: NextFunction,){
+  public async isModel(req: Request, res: Response, next: NextFunction) {
     try {
       const model = await modelRepository.findOne(req.body.name);
-      if(model){
-        throw new ApiError('Model already exists', 409)
+      if (model) {
+        throw new ApiError("Model already exists", 409);
       }
+      next();
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async userAccount(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { account, _id } = res.locals.user;
+      const userCars = await carRepository.getAllOwner(_id);
+      if (account === "base" && userCars.length >= 1) {
+        throw new ApiError(
+          "Base account can create only one car. Please upgrade to premium.",
+          403,
+        );
+      }
+
       next();
     } catch (e) {
       next(e);

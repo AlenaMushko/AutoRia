@@ -1,2 +1,3 @@
 export { RegexConstants } from "./regex.constants";
-export * from "./email.constant";
+export * from "./email.constants";
+export * from "./code.currency.constants";

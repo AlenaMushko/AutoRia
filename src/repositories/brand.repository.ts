@@ -1,11 +1,11 @@
 import { ApiError } from "../errors";
-import { Brand} from "../models";
+import { Brand } from "../models";
 import { IBrand } from "../types";
 
-class BrandRepository{
+class BrandRepository {
   public async create(value: IBrand): Promise<IBrand> {
     try {
-      return (await Brand.create({ ...value }));
+      return await Brand.create({ ...value });
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }
@@ -13,7 +13,7 @@ class BrandRepository{
 
   public async findAll(): Promise<IBrand[]> {
     try {
-      return (await Brand.find());
+      return await Brand.find();
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }
@@ -21,23 +21,23 @@ class BrandRepository{
 
   public async findOne(name: string): Promise<IBrand> {
     try {
-      return (await Brand.findOne({ name }));
+      return await Brand.findOne({ name });
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }
   }
 
-  public async findById(_id: string): Promise<IBrand>{
+  public async findById(_id: string): Promise<IBrand> {
     try {
-      return (await Brand.findById(_id));
+      return await Brand.findById(_id);
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }
   }
 
-  public async deleteById(_id: string): Promise<IBrand>{
+  public async deleteById(_id: string): Promise<IBrand> {
     try {
-      return (await Brand.findByIdAndDelete(_id));
+      return await Brand.findByIdAndDelete(_id);
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }

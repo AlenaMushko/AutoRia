@@ -1,12 +1,14 @@
 import { NextFunction, Request, Response } from "express";
+
 import { ApiError } from "../errors";
 import { brandService } from "../services/brand.service";
 import { IBrand } from "../types";
 
 class BrandController {
-  public async findAll(req: Request,
-                       res: Response,
-                       next: NextFunction
+  public async findAll(
+    req: Request,
+    res: Response,
+    next: NextFunction,
   ): Promise<Response<IBrand[]>> {
     try {
       const brands = await brandService.findAll();
@@ -14,9 +16,7 @@ class BrandController {
         throw new ApiError("Brands not exists", 400);
       }
 
-      return res
-        .status(200)
-        .json({ data: brands });
+      return res.status(200).json({ data: brands });
     } catch (error) {
       next(error);
     }
@@ -25,7 +25,7 @@ class BrandController {
   public async create(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): Promise<Response<IBrand>> {
     try {
       const newBrand = await brandService.create(req.body);
@@ -41,7 +41,7 @@ class BrandController {
   public async findById(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): Promise<Response<IBrand>> {
     try {
       const brand = res.locals.brand;
@@ -55,13 +55,15 @@ class BrandController {
   public async deleteById(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): Promise<Response<IBrand>> {
     try {
       const { brandId } = req.params;
       await brandService.deleteById(brandId);
 
-      return res.status(200).json({ message: `Model id=${brandId} is deleted` });
+      return res
+        .status(200)
+        .json({ message: `Model id=${brandId} is deleted` });
     } catch (e) {
       next(e);
     }

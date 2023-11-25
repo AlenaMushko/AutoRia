@@ -5,7 +5,14 @@ import * as swaggerUi from "swagger-ui-express";
 
 import { configs } from "./config";
 import { cronRunner } from "./cronns";
-import { authRouter, brandRouter, carRouter, modelRouter, roleRouter, userRouter } from "./routers";
+import {
+  authRouter,
+  brandRouter,
+  carRouter,
+  modelRouter,
+  roleRouter,
+  userRouter,
+} from "./routers";
 import { initializeAdmin } from "./utils/createAdmin";
 import * as swaggerJson from "./utils/swagger.json";
 

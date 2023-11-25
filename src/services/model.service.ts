@@ -1,12 +1,13 @@
 import { ApiError } from "../errors";
 import { brandRepository } from "../repositories/brand.repository";
 import { modelRepository } from "../repositories/model.repository";
-
 import { IModel } from "../types";
 
-
-class ModelService{
-  public async findAllByBrand(brandId:string, brand:string): Promise<IModel[]>{
+class ModelService {
+  public async findAllByBrand(
+    brandId: string,
+    brand: string,
+  ): Promise<IModel[]> {
     try {
       const brands = await modelRepository.findAllByBrand(brandId);
       if (!brands.length) {
@@ -19,11 +20,11 @@ class ModelService{
   }
 
   public async create(value: IModel): Promise<IModel> {
-      try {
-      const {_brandId, name} = value;
-      const {_id} = await brandRepository.findOne(_brandId);
-      if(!_id){
-        throw new ApiError('Brand not exists', 404)
+    try {
+      const { _brandId, name } = value;
+      const { _id } = await brandRepository.findOne(_brandId);
+      if (!_id) {
+        throw new ApiError("Brand not exists", 404);
       }
 
       return await modelRepository.create(_id, name);
@@ -32,7 +33,10 @@ class ModelService{
     }
   }
 
-  public async updateById(modelId:string, value:Partial<IModel>): Promise<IModel>{
+  public async updateById(
+    modelId: string,
+    value: Partial<IModel>,
+  ): Promise<IModel> {
     try {
       return await modelRepository.updateById(modelId, value.name);
     } catch (e) {
