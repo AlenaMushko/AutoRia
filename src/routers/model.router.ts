@@ -12,37 +12,40 @@ router.post(
   authMiddleware.isMyRole(ERoles.Admin),
   commonMiddleware.isBodyValid(modelSchema.create),
   carMiddleware.isModel,
-  modelController.create,
+  modelController.create
 );
-//
-// router.get(
-//   "/",
-//   brandController.findAll,
-// );
-//
-// router.get(
-//   "/:brandId",
-//   commonMiddleware.isIdValid("brandId"),
-//   carMiddleware.findByIdBrandByThrow,
-//   brandController.findById,
-// );
-//
-// router.put(
-//   "/:userId",
-//   commonMiddleware.isIdValid("userId"),
-//   commonMiddleware.isBodyValid(modelSchema.update),
-//   userMiddleware.findByIdByThrow,
-//   userController.updateById,
-// );
-//
-//
-// router.delete(
-//   "/:brandId",
-//   authenticateMiddleware.isLogin,
-//   authMiddleware.isMyRole(ERoles.Admin),
-//   commonMiddleware.isIdValid("brandId"),
-//   carMiddleware.findByIdBrandByThrow,
-//   brandController.deleteById,
-// );
+
+router.get(
+  "/all/:brandId",
+  commonMiddleware.isIdValid("brandId"),
+  carMiddleware.findByIdBrandByThrow,
+  modelController.findAllByBrand
+);
+
+router.get(
+  "/:modelId",
+  commonMiddleware.isIdValid("modelId"),
+  carMiddleware.findByIdModelByThrow,
+  modelController.findById,
+);
+
+router.put(
+  "/:modelId",
+  authenticateMiddleware.isLogin,
+  authMiddleware.isMyRole(ERoles.Admin),
+  commonMiddleware.isIdValid("modelId"),
+  commonMiddleware.isBodyValid(modelSchema.update),
+  carMiddleware.findByIdModelByThrow,
+  modelController.updateById,
+);
+
+router.delete(
+  "/:modelId",
+  authenticateMiddleware.isLogin,
+  authMiddleware.isMyRole(ERoles.Admin),
+  commonMiddleware.isIdValid("modelId"),
+  carMiddleware.findByIdModelByThrow,
+  modelController.deleteById,
+);
 
 export const modelRouter = router;

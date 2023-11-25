@@ -31,7 +31,7 @@ class CarController {
       const { _id } = res.locals.user;
       const cars = await carService.getAllOwner(_id);
 
-      return res.status(200).json(cars);
+      return res.status(200).json({data: cars });
     } catch (e) {
       next(e);
     }
@@ -45,7 +45,7 @@ class CarController {
     try {
       const { _id: _ownerId } = res.locals.user;
       const newCar = await carService.create({ ...req.body, _ownerId });
-      return res.status(201).json({ message: "Car is created", car: newCar });
+      return res.status(201).json({ message: "Car is created", data: newCar });
     } catch (e) {
       next(e);
     }
@@ -77,7 +77,7 @@ class CarController {
 
       return res
         .status(200)
-        .json({ messaga: "Car is updated", car: updatedCar });
+        .json({ messaga: "Car is updated", data: updatedCar });
     } catch (e) {
       next(e);
     }
@@ -95,7 +95,7 @@ class CarController {
 
       return res
         .status(200)
-        .json({ message: "Car is updated", user: updatedCar });
+        .json({ message: "Car is updated", data: updatedCar });
     } catch (e) {
       next(e);
     }

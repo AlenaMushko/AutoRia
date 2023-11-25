@@ -14,7 +14,7 @@ class RoleController {
 
       return res
         .status(201)
-        .json({ message: "User is created", role: newRole });
+        .json({ message: "User is created", data: newRole });
     } catch (error) {
       next(error);
     }
@@ -28,7 +28,7 @@ class RoleController {
     try {
       const { roleId } = req.params;
       const role = await roleService.findById(roleId);
-      return res.status(200).json(role);
+      return res.status(200).json({ data: role });
     } catch (error) {
       next(error);
     }
@@ -43,7 +43,7 @@ class RoleController {
       const { roleId } = req.params;
       const updatedRole = await roleService.updateById(roleId, req.body);
 
-      return res.status(200).json({ message: "User is updated", updatedRole });
+      return res.status(200).json({ message: "User is updated", data: updatedRole });
     } catch (e) {
       next(e);
     }

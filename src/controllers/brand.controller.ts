@@ -16,7 +16,7 @@ class BrandController {
 
       return res
         .status(200)
-        .json({ brands: brands });
+        .json({ data: brands });
     } catch (error) {
       next(error);
     }
@@ -32,7 +32,7 @@ class BrandController {
 
       return res
         .status(201)
-        .json({ message: "Brand is created", brand: newBrand });
+        .json({ message: "Brand is created", data: newBrand });
     } catch (error) {
       next(error);
     }
@@ -61,7 +61,7 @@ class BrandController {
       const { brandId } = req.params;
       await brandService.deleteById(brandId);
 
-      return res.status(200).json({ message: `User id=${brandId} is deleted` });
+      return res.status(200).json({ message: `Model id=${brandId} is deleted` });
     } catch (e) {
       next(e);
     }

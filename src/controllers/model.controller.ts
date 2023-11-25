@@ -3,23 +3,23 @@ import { modelService } from "../services/model.service";
 import { IModel } from "../types";
 
 class ModelController {
-  // public async findAll(req: Request,
-  //                      res: Response,
-  //                      next: NextFunction
-  // ): Promise<Response<IBrand[]>> {
-  //   try {
-  //     const brands = await brandService.findAll();
-  //     if (!brands.length) {
-  //       throw new ApiError("Brands not exists", 400);
-  //     }
-  //
-  //     return res
-  //       .status(200)
-  //       .json({ brands: brands });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
+  public async findAllByBrand(req: Request,
+                       res: Response,
+                       next: NextFunction
+  ): Promise<Response<IModel[]>> {
+    try {
+      const { brandId } = req.params;
+      const brand = res.locals.brand.name
+
+      const models = await modelService.findAllByBrand(brandId, brand);
+
+      return res
+        .status(200)
+        .json({ data: models });
+    } catch (error) {
+      next(error);
+    }
+  }
 
   public async create(
     req: Request,
@@ -31,62 +31,58 @@ class ModelController {
 
       return res
         .status(201)
-        .json({ message: "Model is created", brand: newModel});
+        .json({ message: "Model is created", data: newModel});
     } catch (error) {
       next(error);
     }
   }
 
-  // public async findById(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction
-  // ): Promise<Response<IBrand>> {
-  //   try {
-  //     const brand = res.locals.brand;
-  //
-  //     return res.status(200).json({ data: brand });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
-  //
-  // public async deleteById(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction
-  // ): Promise<Response<IBrand>> {
-  //   try {
-  //     const { brandId } = req.params;
-  //     await brandService.deleteById(brandId);
-  //
-  //     return res.status(200).json({ message: `User id=${brandId} is deleted` });
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
+  public async findById(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<IModel>> {
+    try {
+      const model = res.locals.model;
 
-  // public async updateById(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction,
-  // ): Promise<Response<IUser>> {
-  //   try {
-  //     const { userId } = req.params;
-  //     const user = res.locals.user;
-  //     const value = req.body;
-  //     const updatedUser = await userService.updateById(userId, user, value);
-  //
-  //     return res
-  //       .status(200)
-  //       .json({ message: "User is updated", user: updatedUser });
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
-  //
+      return res.status(200).json({ data: model });
+    } catch (error) {
+      next(error);
+    }
+  }
 
+  public async updateById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response<IModel>> {
+    try {
+      const { modelId } = req.params;
+      const value = req.body;
+      const updatedModel = await modelService.updateById(modelId,  value);
 
+      return res
+        .status(200)
+        .json({ message: "Model is updated", data: updatedModel });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async deleteById(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<IModel>> {
+    try {
+      const { modelId } = req.params;
+      await modelService.deleteById(modelId);
+
+      return res.status(200).json({ message: `Model id=${modelId} is deleted` });
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export const modelController = new ModelController();

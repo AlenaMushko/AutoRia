@@ -6,19 +6,22 @@ import { IModel } from "../types";
 
 
 class ModelService{
-  // public async findAll(): Promise<IBrand[]>{
-  //   try {
-  //     return await brandRepository.findAll();
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
+  public async findAllByBrand(brandId:string, brand:string): Promise<IModel[]>{
+    try {
+      const brands = await modelRepository.findAllByBrand(brandId);
+      if (!brands.length) {
+        throw new ApiError(`Models not exists for ${brand} brand`, 400);
+      }
+      return brands;
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
 
   public async create(value: IModel): Promise<IModel> {
       try {
       const {_brandId, name} = value;
       const {_id} = await brandRepository.findOne(_brandId);
-        console.log(_brandId,  name, _id.toString());
       if(!_id){
         throw new ApiError('Brand not exists', 404)
       }
@@ -29,14 +32,21 @@ class ModelService{
     }
   }
 
-  // public async deleteById(_id: string): Promise<IBrand> {
-  //   try {
-  //     return await brandRepository.deleteById(_id);
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
+  public async updateById(modelId:string, value:Partial<IModel>): Promise<IModel>{
+    try {
+      return await modelRepository.updateById(modelId, value.name);
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
 
+  public async deleteById(_id: string): Promise<IModel> {
+    try {
+      return await modelRepository.deleteById(_id);
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
 }
 
 export const modelService = new ModelService();

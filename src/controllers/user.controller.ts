@@ -14,7 +14,7 @@ class UserController {
   //       req.query as unknown as IQuery,
   //     );
   //
-  //     return res.status(200).json(users);
+  //     return res.status(200).json({data: users});
   //   } catch (e) {
   //     next(e);
   //   }
@@ -30,7 +30,7 @@ class UserController {
 
       return res
         .status(201)
-        .json({ message: "User is created", user: newUser });
+        .json({ message: "User is created", data: newUser });
     } catch (error) {
       next(error);
     }
@@ -63,7 +63,7 @@ class UserController {
 
       return res
         .status(200)
-        .json({ message: "User is updated", user: updatedUser });
+        .json({ message: "User is updated", data: updatedUser });
     } catch (e) {
       next(e);
     }
@@ -97,7 +97,7 @@ class UserController {
   //
   //     const presenterUser = userPresenter.present(user);
   //
-  //     return res.status(200).json(presenterUser);
+  //     return res.status(200).json({data: presenterUser});
   //   } catch (e) {
   //     next(e);
   //   }

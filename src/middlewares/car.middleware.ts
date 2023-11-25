@@ -26,6 +26,26 @@ class CarMiddleware {
     }
   }
 
+  public async findByIdModelByThrow(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const { modelId } = req.params;
+
+      const model = await modelRepository.findById(modelId);
+      if (!model) {
+        throw new ApiError("Model not found", 404);
+      }
+
+      res.locals.model = model;
+      next();
+    } catch (e) {
+      next(e);
+    }
+  }
+
   public async findByIdByThrow(
     req: Request,
     res: Response,
