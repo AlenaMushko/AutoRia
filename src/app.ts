@@ -5,8 +5,7 @@ import * as swaggerUi from "swagger-ui-express";
 
 import { configs } from "./config";
 import { cronRunner } from "./cronns";
-import { authRouter, carRouter, userRouter } from "./routers";
-import { roleRouter } from "./routers/roles.router";
+import { authRouter, brandRouter, carRouter, modelRouter, roleRouter, userRouter } from "./routers";
 import { initializeAdmin } from "./utils/createAdmin";
 import * as swaggerJson from "./utils/swagger.json";
 
@@ -20,6 +19,8 @@ const PORT = configs.PORT;
 app.use("/roles", roleRouter);
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
+app.use("/brands", brandRouter);
+app.use("/models", modelRouter);
 app.use("/cars", carRouter);
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerJson));
 

@@ -43,7 +43,7 @@ router.get(
 router.put(
   "/:userId",
   commonMiddleware.isIdValid("userId"),
-  commonMiddleware.isBodyValid(userSchema.create),
+  commonMiddleware.isBodyValid(userSchema.updateUserSchema),
   userMiddleware.findByIdByThrow,
   userController.updateById,
 );

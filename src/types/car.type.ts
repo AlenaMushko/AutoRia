@@ -17,11 +17,11 @@ export interface ICar extends Document {
   status: string;
 }
 
-export interface IModel {
-  _brandId: Types.ObjectId;
+export interface IModel extends Document{
+  _brandId: string;
   name: string;
 }
 
-export interface IBrand {
+export interface IBrand extends Document{
   name: string;
 }

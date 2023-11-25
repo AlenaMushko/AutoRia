@@ -10,6 +10,7 @@ const modelSchema = new Schema(
     },
     name: {
       type: String,
+      set: (v: string) => v.trim(),
       required: [true, "Name is required"],
     },
   },
