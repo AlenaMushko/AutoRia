@@ -4,5 +4,5 @@ export enum EEmailAction {
   RESET_PASSWORD,
   WELCOME,
   CRON_HELLO,
-  PROFANITY
+  PROFANITY,
 }

@@ -20,20 +20,20 @@ class CarController {
   //   }
   // }
 
-  // public async getAllOwner(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction,
-  // ): Promise<Response<ICar[]>> {
-  //   try {
-  //     const { _id } = res.locals.user;
-  //     const cars = await carService.getAllOwner(_id);
-  //
-  //     return res.status(200).json({ data: cars });
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
+  public async getAllOwner(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response<ICar[]>> {
+    try {
+      const { _id } = res.locals.user;
+      const cars = await carService.getAllOwner(_id);
+
+      return res.status(200).json({ data: cars });
+    } catch (e) {
+      next(e);
+    }
+  }
 
   public async create(
     req: Request,

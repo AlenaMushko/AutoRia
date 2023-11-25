@@ -1,4 +1,4 @@
-import { Document, Types } from "mongoose";
+import { Document } from "mongoose";
 
 import { ECurrency, ERegion } from "../enums";
 
@@ -18,23 +18,23 @@ export interface ICarCreate {
 }
 
 export interface ICar extends Document {
-  _userId: Types.ObjectId;
-  photo?: string | string[];
-  video?: string | string[];
+  _userId: string;
+  photo?: string | string[] | null;
+  video?: string | string[] | null;
   type: string;
   _brandId: string;
   _modelId: string;
-  year?: number;
-  description?: string;
+  year?: number | null;
+  description?: string | null;
   newCar: boolean;
   region: ERegion;
-  city?: string;
-  priceUAN: number;
-  priceEUR: number;
-  priceUSD: number;
+  city?: string | null;
+  priceUAN: string;
+  priceEUR: string;
+  priceUSD: string;
   count: number;
   status: string;
-  countSendLetters:number
+  countSendLetters: number;
 }
 
 export interface IModel extends Document {

@@ -16,8 +16,8 @@ router.use(authenticateMiddleware.isLogin);
 //   commonMiddleware.isQueryValid(carSchema.queryCarSchema),
 //   carController.getAll,
 // );
-//
-// router.get("/owner", authenticateMiddleware.isLogin, carController.getAllOwner);
+
+router.get("/owner", authenticateMiddleware.isLogin, carController.getAllOwner);
 
 router.post(
   "/",
@@ -52,22 +52,13 @@ router.post(
 //   carMiddleware.findByIdByThrow,
 //   carController.updateByIdPut,
 // );
-//
-// router.patch(
-//   "/:carId",
-//   authenticateMiddleware.isLogin,
-//   commonMiddleware.isIdValid("carId"),
-//   commonMiddleware.isBodyValid(carSchema.updateCarSchema),
-//   carMiddleware.findByIdByThrow,
-//   carController.updateByIdPatch,
-// );
-//
-// router.delete(
-//   "/:carId",
-//   authenticateMiddleware.isLogin,
-//   commonMiddleware.isIdValid("carId"),
-//   carMiddleware.findByIdByThrow,
-//   carController.deleteById,
-// );
+
+router.delete(
+  "/:carId",
+  authenticateMiddleware.isLogin,
+  commonMiddleware.isIdValid("carId"),
+  carMiddleware.findByIdByThrow,
+  // carController.deleteById,
+);
 
 export const carRouter = router;

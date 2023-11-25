@@ -1,6 +1,6 @@
 import { model, Schema, Types } from "mongoose";
 
-import { EStatus } from "../../enums";
+import { ERegion, EStatus } from "../../enums";
 import { ICar } from "../../types";
 
 const currentYear = new Date().getFullYear();
@@ -39,27 +39,33 @@ const carSchema = new Schema(
     },
     description: {
       type: String,
-      min: [3, "Name min 3 symbols"],
-      max: [500, "Name max 500 symbols"],
+      min: [3, "description min 3 symbols"],
+      max: [500, "description max 500 symbols"],
     },
-    isNew: {
+    newCar: {
       type: Boolean,
       required: [true, "Is car new?"],
     },
     region: {
       type: String,
-      min: [3, "Name min 3 symbols"],
-      max: [30, "Name max 30 symbols"],
+      enum: ERegion,
       required: [true, "Region is required"],
     },
     city: {
       type: String,
-      min: [3, "Name min 3 symbols"],
-      max: [30, "Name max 30 symbols"],
+      min: [3, "City min 3 symbols"],
+      max: [30, "City max 30 symbols"],
     },
-    price: {
-      type: Number,
-      min: [1, "Price min 1"],
+    priceUAN:{
+      type: String,
+      required: [true, "Price is required"],
+    },
+    priceEUR: {
+      type: String,
+      required: [true, "Price is required"],
+    },
+    priceUSD: {
+      type: String,
       required: [true, "Price is required"],
     },
     count: {
@@ -72,6 +78,13 @@ const carSchema = new Schema(
       default: EStatus.Review,
       required: [true, "Status is required"],
     },
+    countSendLetters:{
+      type:Number,
+      min: [0, "countSendLetters min 0"],
+      max: [3, "countSendLetters max 3"],
+      required: [true, "countSendLetters is required"],
+
+    }
   },
   {
     timestamps: true,

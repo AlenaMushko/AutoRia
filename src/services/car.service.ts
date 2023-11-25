@@ -1,8 +1,10 @@
-import { ECurrency, EEmailAction, EStatus } from "../enums";
+import {  EEmailAction, EStatus } from "../enums";
 import { ApiError } from "../errors";
+import { carRepository } from "../repositories";
 import { brandRepository } from "../repositories/brand.repository";
 import { modelRepository } from "../repositories/model.repository";
-import { ICarCreate, IUser } from "../types";
+import { ICar, ICarCreate, IUser } from "../types";
+import { currencyConversion } from "../utils/currencyConversion";
 import { profanityList } from "../utils/profanityList";
 import { emailService } from "./email.service";
 
@@ -36,19 +38,19 @@ class CarService {
   //   }
   // }
 
-  // public async getAllOwner(id: object): Promise<ICar[]> {
-  //   try {
-  //     return await carRepository.getAllOwner(id);
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
-  public async create(value: ICarCreate, user:IUser) {
-    // public async create(value: ICar, _userId:string): Promise<ICar> {
+  public async getAllOwner(id: object): Promise<ICar[]> {
+    try {
+      return await carRepository.getAllOwner(id);
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+
+  public async create(value: ICarCreate, user:IUser): Promise<ICar> {
     try {
       const { _id: brandId } = await brandRepository.findOne(value.brand);
       const { _id: modelId } = await modelRepository.findOne(value.model);
-      let countSendLetters =0;
+      let countSendLetters = 0;
 
       const correctDescription = profanityList.some(profaneWord => value.description.toLowerCase().includes(profaneWord.toLowerCase()));
       if (correctDescription) {
@@ -56,22 +58,24 @@ class CarService {
         await emailService.profanityLatter(user.email, EEmailAction.PROFANITY, {
           name: user.name + ", " || " ",
         });
+        throw new ApiError('The description contains offensive language', 404)
 
       }
 
-      const currency = value.currency;
-      console.log(currency);
-      const priceUAN = value.price + " " + ECurrency.UAN;
-      const priceEUR = value.price + " " + ECurrency.EUR;
-      const priceUSD = value.price + " " + ECurrency.USD;
+      const {priceUAN, priceEUR, priceUSD } = await currencyConversion(value.currency, value.price);
 
-      console.log(value);
       const newCar = {
-        ...value,
         _userId: user._id.toString(),
+        photo: value.photo || null,
+        video: value.video || null,
+        type: value.type,
         _brandId: brandId.toString(),
         _modelId: modelId.toString(),
-        description: correctDescription,
+        year: value.year || null,
+        description: value.description || null,
+        newCar: value.newCar,
+        region: value.region,
+        city: value.city || null,
         priceUAN,
         priceEUR,
         priceUSD,
@@ -79,8 +83,7 @@ class CarService {
         status: EStatus.Review,
         countSendLetters
       };
-      console.log(newCar);
-      // return await carRepository.create(value);
+      return await carRepository.create(newCar);
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }
