@@ -6,7 +6,6 @@ const brandSchema = new Schema(
   {
     name: {
       type: String,
-      set: (v: string) => v.trim(),
       unique: true,
       required: [true, "Name is required"],
     },

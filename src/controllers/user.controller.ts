@@ -83,6 +83,49 @@ class UserController {
       next(e);
     }
   }
+
+  public async emailToManager(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response<void>> {
+    try {
+      const user = res.locals.user;
+      await userService.emailToManager(user, req.body.text);
+      return res.status(200).json({ message: 'email is sending for manager' });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async emailToAdmin(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response<void>> {
+    try {
+      const user = res.locals.user;
+      await userService.emailToAdmin(user, req.body.text);
+      return res.status(200).json({ message: 'email is sending for manager' });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async buyPremium(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response<void>> {
+    try {
+      const user = res.locals.user;
+      await userService.emailToAdmin(user, req.body.text);
+      return res.status(200).json({ message: 'email is sending for manager' });
+    } catch (e) {
+      next(e);
+    }
+  }
+
   //
   // public async uploadAvatar(
   //   req: Request,

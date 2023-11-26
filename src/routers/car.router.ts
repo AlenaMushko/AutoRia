@@ -35,30 +35,31 @@ router.post(
 //   fileMiddleware.isImgValid,
 //   carController.uploadPhoto,
 // );
-//
-// router.get(
-//   "/:carId",
-//   authenticateMiddleware.isLogin,
-//   commonMiddleware.isIdValid("carId"),
-//   carMiddleware.findByIdByThrow,
-//   carController.findById,
-// );
-//
-// router.put(
-//   "/:carId",
-//   authenticateMiddleware.isLogin,
-//   commonMiddleware.isIdValid("carId"),
-//   commonMiddleware.isBodyValid(carSchema.create),
-//   carMiddleware.findByIdByThrow,
-//   carController.updateByIdPut,
-// );
+
+router.get(
+  "/:carId",
+  authenticateMiddleware.isLogin,
+  commonMiddleware.isIdValid("carId"),
+  carMiddleware.findByIdByThrow,
+  carController.findById,
+);
+
+router.put(
+  "/:carId",
+  authenticateMiddleware.isLogin,
+  commonMiddleware.isIdValid("carId"),
+  commonMiddleware.isBodyValid(carSchema.update),
+  carMiddleware.findByIdByThrow,
+  carMiddleware.isStatus,
+  carController.updateById,
+);
 
 router.delete(
   "/:carId",
   authenticateMiddleware.isLogin,
   commonMiddleware.isIdValid("carId"),
   carMiddleware.findByIdByThrow,
-  // carController.deleteById,
+  carController.deleteById,
 );
 
 export const carRouter = router;

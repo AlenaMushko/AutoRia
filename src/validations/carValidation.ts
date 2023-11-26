@@ -71,7 +71,7 @@ export class carSchema {
     "string.max":
       "{{#label}} length must be less than or equal to {{#limit}} characters long",
   });
-  static countSendLetters = Joi.number().integer().min(0).max(3).messages({
+  static countSendLetters = Joi.number().integer().min(0).max(4).messages({
     "number.base": "{{#label}} must be a number",
     "string.min": "{{#label}} must be at least {{#limit}}",
     "string.max": "{{#label}}  must be less than or equal to {{#limit}}",
@@ -107,35 +107,15 @@ export class carSchema {
     city: this.city,
     price: this.price.required(),
     currency: this.currency.required(),
-    count: this.count,
-    status: this.status.default(EStatus.Review),
-    countSendLetters: this.countSendLetters,
   });
 
-  static updateCarSchema = Joi.object({
-    type: this.type,
-    brand: this.brand,
-    model: this.model,
-    year: this.year,
+  static update = Joi.object({
     description: this.description,
-    newCar: this.isNew,
     region: this.region,
     city: this.city,
     price: this.price,
     currency: this.currency,
-    countSendLetters: this.countSendLetters,
-  }).or(
-    "type",
-    "brand",
-    "model",
-    "year",
-    "description",
-    "newCar",
-    "region",
-    "city",
-    "price",
-    "currency",
-  );
+  }).or("description", "region", "city", "price", "currency");
 
   // static queryCarSchema = Joi.object({
   //   page: this.page,

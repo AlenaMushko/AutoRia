@@ -56,7 +56,7 @@ const carSchema = new Schema(
       min: [3, "City min 3 symbols"],
       max: [30, "City max 30 symbols"],
     },
-    priceUAN:{
+    priceUAN: {
       type: String,
       required: [true, "Price is required"],
     },
@@ -78,13 +78,12 @@ const carSchema = new Schema(
       default: EStatus.Review,
       required: [true, "Status is required"],
     },
-    countSendLetters:{
-      type:Number,
+    countSendLetters: {
+      type: Number,
       min: [0, "countSendLetters min 0"],
-      max: [3, "countSendLetters max 3"],
+      max: [4, "countSendLetters max 4"],
       required: [true, "countSendLetters is required"],
-
-    }
+    },
   },
   {
     timestamps: true,

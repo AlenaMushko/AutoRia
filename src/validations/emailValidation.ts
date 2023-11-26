@@ -1,0 +1,15 @@
+import Joi from "joi";
+
+export class emailSchema {
+  static text = Joi.string().min(3).max(300).messages({
+    "string.base": "should be a type of 'text'",
+    "string.min":
+      "{{#label}} length must be at least {{#limit}} characters long",
+    "string.max":
+      "{{#label}} length must be less than or equal to {{#limit}} characters long",
+  });
+
+  static create = Joi.object({
+    text: this.text.required(),
+  });
+}

@@ -49,72 +49,54 @@ class CarController {
     }
   }
 
-  // public async findById(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction,
-  // ): Promise<Response<ICar>> {
-  //   try {
-  //     const car = res.locals.car;
-  //
-  //     return res.status(200).json({ data: car });
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
-  //
-  // public async updateByIdPut(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction,
-  // ): Promise<Response<ICar>> {
-  //   try {
-  //     const { _id } = res.locals.user;
-  //     const { carId } = req.params;
-  //     const updatedCar = await carService.updateByIdPut(carId, req.body, _id);
-  //
-  //     return res
-  //       .status(200)
-  //       .json({ messaga: "Car is updated", data: updatedCar });
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
-  //
-  // public async updateByIdPatch(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction,
-  // ): Promise<Response<ICar>> {
-  //   try {
-  //     const { _id } = res.locals.user;
-  //     const { carId } = req.params;
-  //     const updatedCar = await carService.updateByIdPatch(carId, req.body, _id);
-  //
-  //     return res
-  //       .status(200)
-  //       .json({ message: "Car is updated", data: updatedCar });
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
-  //
-  // public async deleteById(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction,
-  // ): Promise<Response<ICar>> {
-  //   try {
-  //     const { _id } = res.locals.user;
-  //     const { carId } = req.params;
-  //     await carService.deleteById(carId, _id);
-  //
-  //     return res.status(200).json({ message: `Car id=${carId} is deleted` });
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
-  //
+  public async findById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response<ICar>> {
+    try {
+      const car = res.locals.car;
+
+      return res.status(200).json({ data: car });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async updateById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response<ICar>> {
+    try {
+      const user = res.locals.user;
+      const { carId } = req.params;
+      const updatedCar = await carService.updateById(carId, req.body, user);
+
+      return res
+        .status(200)
+        .json({ messaga: "Car is updated", data: updatedCar });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async deleteById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response<ICar>> {
+    try {
+      const user = res.locals.user;
+      const { carId } = req.params;
+      await carService.deleteById(carId, user);
+
+      return res.status(200).json({ message: `Car id=${carId} is deleted` });
+    } catch (e) {
+      next(e);
+    }
+  }
+
   // public async uploadPhoto(
   //   req: Request,
   //   res: Response,

@@ -1,8 +1,10 @@
-import {  EEmailAction, EStatus } from "../enums";
+import { configs } from "../config";
+import { EEmailAction, ERoles, EStatus } from "../enums";
 import { ApiError } from "../errors";
 import { carRepository } from "../repositories";
 import { brandRepository } from "../repositories/brand.repository";
 import { modelRepository } from "../repositories/model.repository";
+import { roleRepository } from "../repositories/role.repository";
 import { ICar, ICarCreate, IUser } from "../types";
 import { currencyConversion } from "../utils/currencyConversion";
 import { profanityList } from "../utils/profanityList";
@@ -46,23 +48,30 @@ class CarService {
     }
   }
 
-  public async create(value: ICarCreate, user:IUser): Promise<ICar> {
+  public async create(value: ICarCreate, user: IUser): Promise<ICar> {
     try {
       const { _id: brandId } = await brandRepository.findOne(value.brand);
       const { _id: modelId } = await modelRepository.findOne(value.model);
       let countSendLetters = 0;
+      let status;
 
-      const correctDescription = profanityList.some(profaneWord => value.description.toLowerCase().includes(profaneWord.toLowerCase()));
+      const correctDescription = profanityList.some((profaneWord) =>
+        value.description.toLowerCase().includes(profaneWord.toLowerCase()),
+      );
       if (correctDescription) {
         countSendLetters = 1;
         await emailService.profanityLatter(user.email, EEmailAction.PROFANITY, {
           name: user.name + ", " || " ",
         });
-        throw new ApiError('The description contains offensive language', 404)
-
+        status = EStatus.Review;
+      } else {
+        status = EStatus.Active;
       }
 
-      const {priceUAN, priceEUR, priceUSD } = await currencyConversion(value.currency, value.price);
+      const { priceUAN, priceEUR, priceUSD } = await currencyConversion(
+        value.currency,
+        value.price,
+      );
 
       const newCar = {
         _userId: user._id.toString(),
@@ -80,8 +89,8 @@ class CarService {
         priceEUR,
         priceUSD,
         count: 0,
-        status: EStatus.Review,
-        countSendLetters
+        status,
+        countSendLetters,
       };
       return await carRepository.create(newCar);
     } catch (e) {
@@ -89,59 +98,136 @@ class CarService {
     }
   }
 
-  // public async isCarOwnerThisUser(
-  //   carId: string,
-  //   userId: string,
-  // ): Promise<ICar> {
-  //   try {
-  //     const car = await carRepository.getOneByParams({
-  //       _id: carId,
-  //       _ownerId: userId,
-  //     });
-  //
-  //     if (!car) {
-  //       throw new ApiError("You can not manage this car", 403);
-  //     }
-  //     return car;
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
+  public async isCarOwnerThisUser(_id: string, _userId: string): Promise<ICar> {
+    try {
+      const car = await carRepository.getOneByParams({
+        _id,
+        _userId,
+      });
 
-  // public async updateByIdPut(
-  //   id: string,
-  //   value: ICar,
-  //   userId: string,
-  // ): Promise<ICar> {
-  //   try {
-  //     await this.isCarOwnerThisUser(id, userId);
-  //     return await carRepository.updateByIdPut(id, value);
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
-  //
-  // public async updateByIdPatch(
-  //   id: string,
-  //   value: ICar,
-  //   userId: string,
-  // ): Promise<ICar> {
-  //   try {
-  //     await this.isCarOwnerThisUser(id, userId);
-  //     return await carRepository.updateByIdPatch(id, value);
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
-  //
-  // public async deleteById(id: string, userId: string): Promise<ICar> {
-  //   try {
-  //     await this.isCarOwnerThisUser(id, userId);
-  //     return await carRepository.deleteById(id);
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
+      return car;
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+
+  public async updateById(
+    id: string,
+    value: ICarCreate,
+    user: IUser,
+  ): Promise<ICar> {
+    try {
+      const car = await this.isCarOwnerThisUser(id, user._id);
+      let countSendLetters = car.countSendLetters;
+      let status = car.status;
+      let priceUAN = car.priceUAN;
+      let priceEUR = car.priceEUR;
+      let priceUSD = car.priceUSD;
+
+      if (value.description) {
+        const correctDescription = profanityList.some((profaneWord) =>
+          value.description.toLowerCase().includes(profaneWord.toLowerCase()),
+        );
+
+        if (correctDescription) {
+          countSendLetters = car.countSendLetters + 1;
+
+          switch (countSendLetters) {
+            case 1 && 2:
+              await emailService.profanityLatter(
+                user.email,
+                EEmailAction.PROFANITY,
+                {
+                  name: user.name + ", " || " ",
+                },
+              );
+              break;
+            case 3:
+              await emailService.profanityLatterLast(
+                user.email,
+                EEmailAction.PROFANITY_LAST,
+                {
+                  name: user.name + ", " || " ",
+                },
+              );
+              break;
+            case 4:
+              await emailService.profanityLatterDelete(
+                user.email,
+                EEmailAction.PROFANITY_DELETE,
+                {
+                  name: user.name + ", " || " ",
+                },
+              );
+
+              status = EStatus.Inactive;
+              await emailService.letterForManager(
+                configs.MANAGER_EMAIL,
+                EEmailAction.MANAGER,
+                {
+                  carId: car._id,
+                },
+              );
+              break;
+          }
+        } else {
+          status = EStatus.Active;
+        }
+      }
+
+      if (value.price) {
+        const price = await currencyConversion(value.currency, value.price);
+        priceUAN = price.priceUAN;
+        priceEUR = price.priceEUR;
+        priceUSD = price.priceUSD;
+      }
+
+      const newValueCar = {
+        description: value.description || car.description,
+        region: value.region || car.region,
+        city: value.city || car.city,
+        priceUAN,
+        priceEUR,
+        priceUSD,
+        status,
+        countSendLetters,
+      };
+
+      const updateCar = Object.assign(car, newValueCar);
+
+      return await carRepository.updateById(id, updateCar);
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+
+  public async deleteById(_id: string, user: IUser): Promise<void> {
+    try {
+      const { _id: _userId, _roleId } = user;
+
+      const car = await this.isCarOwnerThisUser(_id, _userId.toString());
+      const userRole = await this.userIsRole(_roleId);
+      if (!car && userRole !== ERoles.Manager && userRole !== ERoles.Admin) {
+        throw new ApiError("You can not manage this car", 403);
+      }
+
+      await carRepository.deleteById(_id);
+      return;
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+
+  public async userIsRole(_roleId: string): Promise<string> {
+    try {
+      const { name } = await roleRepository.getOneByParams({ _id: _roleId });
+
+      return name;
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+
   //
   // public async uploadPhoto(
   //   imgsFile: UploadedFile[] | UploadedFile,

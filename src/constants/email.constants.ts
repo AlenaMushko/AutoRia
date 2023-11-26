@@ -25,4 +25,24 @@ export const templates = {
     templateName: "profanity-car",
     subject: "The description contains inappropriate words. Please fix it",
   },
+  [EEmailAction.PROFANITY_LAST]: {
+    templateName: "profanity-car-last",
+    subject: "The description contains inappropriate words. Please fix it",
+  },
+  [EEmailAction.PROFANITY_DELETE]: {
+    templateName: "profanity-car-delete",
+    subject: "The description contains inappropriate words.",
+  },
+  [EEmailAction.MANAGER]: {
+    templateName: "manager-deleteCar",
+    subject: "The car is inactive",
+  },
+  [EEmailAction.MANAGER_EMAIL]: {
+    templateName: "manager-email",
+    subject: "email from autoRia",
+  },
+  [EEmailAction.ADMIN_EMAIL]: {
+    templateName: "admin-email",
+    subject: "email from autoRia",
+  }
 };

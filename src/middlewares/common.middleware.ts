@@ -26,7 +26,6 @@ class CommonMiddleware {
     return (req: Request, res: Response, next: NextFunction) => {
       try {
         const { error, value } = validator.validate(req.body);
-
         if (error) {
           const errorMessage = error.message;
           throw new ApiError(errorMessage, 400);

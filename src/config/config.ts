@@ -14,6 +14,8 @@ export const configs = {
 
   NO_REPLY_EMAIL: process.env.NO_REPLY_EMAIL,
   NO_REPLY_PASSWORD: process.env.NO_REPLY_PASSWORD,
+  ADMIN_EMAIL: process.env.ADMIN_EMAIL,
+  MANAGER_EMAIL: process.env.MANAGER_EMAIL,
 
   AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY,
   AWS_SECRET_KEY: process.env.AWS_SECRET_KEY,

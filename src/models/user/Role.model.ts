@@ -7,7 +7,6 @@ const roleSchema = new Schema(
   {
     name: {
       type: String,
-      set: (v: string) => v.trim().toLowerCase(),
       enum: ERoles,
       required: [true, "Name is required"],
     },

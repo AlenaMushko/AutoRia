@@ -105,6 +105,22 @@ class CarMiddleware {
       next(e);
     }
   }
+
+  public async isStatus(req: Request, res: Response, next: NextFunction) {
+    try {
+      const car = res.locals.car;
+      if (car.status === "inactive") {
+        throw new ApiError(
+          "the status of your message is inactive, you can contact the manager",
+          403,
+        );
+      }
+
+      next();
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export const carMiddleware = new CarMiddleware();

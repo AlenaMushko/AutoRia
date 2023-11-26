@@ -9,6 +9,7 @@ import {
   userMiddleware,
 } from "../middlewares";
 import { userSchema } from "../validations";
+import { emailSchema } from "../validations/emailValidation";
 
 const router = Router();
 router.use(authenticateMiddleware.isLogin);
@@ -24,6 +25,27 @@ router.post(
   authMiddleware.isMyRole(ERoles.Admin),
   commonMiddleware.isBodyValid(userSchema.create),
   userController.create,
+);
+
+router.post(
+  "/emailToManager",
+  authenticateMiddleware.isLogin,
+  commonMiddleware.isBodyValid(emailSchema.create),
+  userController.emailToManager,
+);
+
+router.post(
+  "/emailToAdmin",
+  authenticateMiddleware.isLogin,
+  commonMiddleware.isBodyValid(emailSchema.create),
+  userController.emailToAdmin,
+);
+
+router.post(
+  "/buyPremium",
+  authenticateMiddleware.isLogin,
+  commonMiddleware.isBodyValid(emailSchema.create),
+  userController.buyPremium,
 );
 
 // router.post(

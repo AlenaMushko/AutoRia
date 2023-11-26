@@ -1,3 +1,5 @@
+import { FilterQuery } from "mongoose";
+
 import { ApiError } from "../errors";
 import { Car } from "../models";
 import { ICar } from "../types";
@@ -41,44 +43,32 @@ class CarRepository {
 
   public async findById(id: string): Promise<ICar> {
     try {
-      return (await Car.findById(id).populate("_ownerId")) as unknown as ICar;
+      return (await Car.findById(id)) as unknown as ICar;
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }
   }
-  //
-  // public async getOneByParams(params: FilterQuery<ICar>): Promise<ICar> {
-  //   try {
-  //     return await Car.findOne(params);
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
-  //
-  // public async updateByIdPut(id: string, value: ICar): Promise<ICar> {
-  //   try {
-  //     return (await Car.findByIdAndUpdate(
-  //       id,
-  //       { ...value },
-  //       { new: true },
-  //     )) as unknown as ICar;
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
 
-  // public async updateByIdPatch(id: string, value: ICar): Promise<ICar> {
-  //   try {
-  //     return (await Car.findByIdAndUpdate(
-  //       id,
-  //       { ...value },
-  //       { new: true },
-  //     )) as unknown as ICar;
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
-  //
+  public async getOneByParams(params: FilterQuery<ICar>): Promise<ICar> {
+    try {
+      return await Car.findOne(params);
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+
+  public async updateById(id: string, value: ICar): Promise<ICar> {
+    try {
+      return (await Car.findByIdAndUpdate(
+        id,
+        { ...value },
+        { new: true },
+      )) as unknown as ICar;
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+
   // public async pushImagesToCar(
   //   _id: string,
   //   imgsPaths: string[],
@@ -96,14 +86,14 @@ class CarRepository {
   //     throw new ApiError(e.message, e.status);
   //   }
   // }
-  //
-  // public async deleteById(id: string): Promise<ICar> {
-  //   try {
-  //     return (await Car.deleteOne({ _id: id })) as unknown as ICar;
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
+
+  public async deleteById(_id: string): Promise<ICar> {
+    try {
+      return (await Car.deleteOne({ _id })) as unknown as ICar;
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
 }
 
 export const carRepository = new CarRepository();

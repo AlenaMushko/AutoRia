@@ -1,3 +1,4 @@
+import { configs } from "../config";
 import { EEmailAction } from "../enums";
 import { ApiError } from "../errors";
 import { EActionActivatedTokenTypes } from "../models";
@@ -107,6 +108,40 @@ class UserService {
     try {
       await userRepository.deleteById(userId);
       return;
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+
+  public async emailToManager(user:IUser, text: string):Promise<void>{
+    try {
+      await emailService.emailToManager(
+        configs.MANAGER_EMAIL,
+        EEmailAction.MANAGER_EMAIL,
+        {
+          userId: user._id,
+          userEmail: user.email,
+          name: user.name,
+          text: text
+        },
+      );
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+
+  public async emailToAdmin(user:IUser, text: string):Promise<void>{
+    try {
+      await emailService.emailToAdmin(
+        configs.ADMIN_EMAIL,
+        EEmailAction.ADMIN_EMAIL,
+        {
+          userId: user._id,
+          userEmail: user.email,
+          name: user.name,
+          text: text
+        },
+      );
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }
