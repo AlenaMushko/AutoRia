@@ -9,7 +9,7 @@ import { querySchema } from "../../validations/queryValidation";
 async function getAllCars(event: APIGatewayProxyEvent): Promise<IPaginationResponse<IUser>> {
   try {
     const user = await isLogin(event);
-    const query = event.queryStringParameters as IQuery;
+    const query = event.queryStringParameters as Partial<IQuery>;
     let cars;
     let allCars;
 
@@ -25,7 +25,8 @@ async function getAllCars(event: APIGatewayProxyEvent): Promise<IPaginationRespo
     //$lte: Less Than or Equal (Менше або Рівно)
     //$gt: Greater Than (Більше)
     //$lt: Less Than (Менше)
-    const { page = 1, limit = 2, sortedBy = "createdAt", ...searchObj } = queryObg;
+
+    const { page = 1, limit = 2, sortedBy = "createdAt", ...searchObj } = queryObg || {};
     const skip = (+page - 1) * +limit;
 
     if (user?.account === "premium") {
@@ -34,8 +35,9 @@ async function getAllCars(event: APIGatewayProxyEvent): Promise<IPaginationRespo
         await connection.collection("cars").countDocuments(searchObj)
       ]);
     } else{
+      console.log('base ====');
       [cars, allCars] = await Promise.all([
-        await connection.collection("cars").find().skip(skip).limit(+limit).toArray(),
+        await connection.collection("cars").find().skip(skip).limit(+limit).toArray(), // вказати дефолтні
         await connection.collection("cars").countDocuments()
       ]);
     }
