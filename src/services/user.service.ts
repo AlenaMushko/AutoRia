@@ -2,7 +2,11 @@ import { configs } from "../config";
 import { EEmailAction } from "../enums";
 import { ApiError } from "../errors";
 import { EActionActivatedTokenTypes } from "../models";
-import { authRepository, userRepository, roleRepository } from "../repositories";
+import {
+  authRepository,
+  roleRepository,
+  userRepository,
+} from "../repositories";
 import { IUser } from "../types";
 import { emailService } from "./email.service";
 import { passwordService } from "./password.service";

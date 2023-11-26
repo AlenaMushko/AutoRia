@@ -77,24 +77,6 @@ export class carSchema {
     "string.max": "{{#label}}  must be less than or equal to {{#limit}}",
   });
 
-  // static page = Joi.number().integer().min(1).max(500).default(1).messages({
-  //   "number.base": "{{#label}} must be a number",
-  //   "string.min": "{{#label}} must be at least {{#limit}} $",
-  //   "string.max": "{{#label}}  must be less than or equal to {{#limit}} $",
-  // });
-  //
-  // static limit = Joi.number().integer().min(1).max(50).default(9).messages({
-  //   "number.base": "{{#label}} must be a number",
-  //   "string.min": "{{#label}} must be at least {{#limit}} $",
-  //   "string.max": "{{#label}}  must be less than or equal to {{#limit}} $",
-  // });
-  //
-  // static sortedBy = Joi.string().default("price").messages({
-  //   "number.base": "{{#label}} must be a number",
-  //   "string.min": "{{#label}} must be at least {{#limit}} $",
-  //   "string.max": "{{#label}}  must be less than or equal to {{#limit}} $",
-  // });
-
   static create = Joi.object({
     _userId: this._userId,
     type: this.type.required(),

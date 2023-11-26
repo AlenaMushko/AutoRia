@@ -31,7 +31,6 @@ custom:
 #      arn: 'arn:aws:sqs:eu-west-1:173045083675:MailQueue-dev'
 #      url: 'https://sqs.eu-west-1.amazonaws.com/173045083675/MailQueue-dev'
 
-
 functions:
   getAllUsers:
     handler: src/handlers/user/getAllUsers.handler
@@ -39,6 +38,20 @@ functions:
       - httpApi:
           path: /users
           method: GET
+
+  getAllCars:
+    handler: src/handlers/car/getAllCars.handler
+    events:
+      - httpApi:
+          path: /cars
+          method: GET
+
+#  getAllQueryCars:
+#    handler: src/handlers/car/getAllQueryCars.handler
+#    events:
+#      - httpApi:
+#          path: /cars
+#          method: GET
 
   cronOldTokensRemover:
     handler: src/handlers/user/cronOldTokensRemover.handler

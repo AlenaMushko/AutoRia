@@ -1,3 +1,6 @@
+import { WithId, Document } from 'mongodb';
+import { EAccounts } from "../../../src/enums";
+
 export interface IQuery {
   page: number;
   limit: number;
@@ -11,5 +14,22 @@ export interface IPaginationResponse<T> {
   perPage: number;
   allItems: number;
   foundItems: number;
-  data: T[];
+  data: WithId<Document>[];
+}
+
+export interface IUser extends Document {
+  name: string;
+  email: string;
+  password: string;
+  _roleId: string;
+  _dealershipId?: string | null;
+  account: EAccounts;
+  verify: boolean;
+  lastVisited: Date;
+  actionToken?: string;
+}
+
+export interface IUserToken {
+  userId: string;
+  email: string;
 }

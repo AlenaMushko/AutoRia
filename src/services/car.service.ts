@@ -1,7 +1,12 @@
 import { configs } from "../config";
 import { EEmailAction, ERoles, EStatus } from "../enums";
 import { ApiError } from "../errors";
-import { carRepository, brandRepository, modelRepository, roleRepository } from "../repositories";
+import {
+  brandRepository,
+  carRepository,
+  modelRepository,
+  roleRepository,
+} from "../repositories";
 import { ICar, ICarCreate, IUser } from "../types";
 import { currencyConversion } from "../utils/currencyConversion";
 import { profanityList } from "../utils/profanityList";

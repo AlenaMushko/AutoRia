@@ -63,6 +63,7 @@
     "@types/cron": "^2.4.0",
     "@types/express-fileupload": "^1.4.4",
     "@types/jsonwebtoken": "^9.0.5",
+    "@types/mongodb": "^4.0.7",
     "@types/mongoose": "^5.11.97",
     "@types/nodemailer": "^6.4.14",
     "@types/nodemailer-express-handlebars": "^4.0.5",
