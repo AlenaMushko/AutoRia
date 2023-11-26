@@ -44,5 +44,5 @@ export const templates = {
   [EEmailAction.ADMIN_EMAIL]: {
     templateName: "admin-email",
     subject: "email from autoRia",
-  }
+  },
 };

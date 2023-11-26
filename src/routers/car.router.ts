@@ -11,12 +11,6 @@ import { carSchema } from "../validations/carValidation";
 const router = Router();
 router.use(authenticateMiddleware.isLogin);
 
-// router.get(
-//   "/",
-//   commonMiddleware.isQueryValid(carSchema.queryCarSchema),
-//   carController.getAll,
-// );
-
 router.get("/owner", authenticateMiddleware.isLogin, carController.getAllOwner);
 
 router.post(
@@ -26,15 +20,6 @@ router.post(
   commonMiddleware.isBodyValid(carSchema.create),
   carController.create,
 );
-//
-// router.post(
-//   "/:carId/img",
-//   authenticateMiddleware.isLogin,
-//   commonMiddleware.isIdValid("carId"),
-//   carMiddleware.findByIdByThrow,
-//   fileMiddleware.isImgValid,
-//   carController.uploadPhoto,
-// );
 
 router.get(
   "/:carId",

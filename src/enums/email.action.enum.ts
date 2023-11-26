@@ -9,5 +9,5 @@ export enum EEmailAction {
   PROFANITY_DELETE,
   MANAGER,
   MANAGER_EMAIL,
-  ADMIN_EMAIL
+  ADMIN_EMAIL,
 }

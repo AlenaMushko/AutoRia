@@ -14,12 +14,6 @@ import { emailSchema } from "../validations/emailValidation";
 const router = Router();
 router.use(authenticateMiddleware.isLogin);
 
-// router.get(
-//   "/",
-//   commonMiddleware.isQueryValid(userSchema.queryUserSchema),
-//   userController.findAll,
-// );
-
 router.post(
   "/",
   authMiddleware.isMyRole(ERoles.Admin),
@@ -48,13 +42,6 @@ router.post(
   userController.buyPremium,
 );
 
-// router.post(
-//   "/:userId/avatar",
-//   commonMiddleware.isIdValid("userId"),
-//   fileMiddleware.isAvatarValid,
-//   userController.uploadAvatar,
-// );
-//
 router.get(
   "/:userId",
   commonMiddleware.isIdValid("userId"),

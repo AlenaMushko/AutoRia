@@ -5,25 +5,6 @@ import { Car } from "../models";
 import { ICar } from "../types";
 
 class CarRepository {
-  // public async searchByQuery(
-  //   searchObj: {
-  //     [key: string]: string;
-  //   },
-  //   skip: number,
-  //   sortedBy: string,
-  //   limit: string,
-  // ): Promise<ICar[]> {
-  //   try {
-  //     return await Car.find(searchObj)
-  //       .skip(skip)
-  //       .limit(+limit)
-  //       .sort(sortedBy)
-  //       .populate("_ownerId");
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
-
   public async getAllOwner(_userId: object): Promise<ICar[]> {
     try {
       return await Car.find({ _userId });
@@ -34,7 +15,6 @@ class CarRepository {
 
   public async create(value: Partial<ICar>): Promise<ICar> {
     try {
-      console.log(value);
       return (await Car.create({ ...value })) as unknown as ICar;
     } catch (e) {
       throw new ApiError(e.message, e.status);
@@ -68,24 +48,6 @@ class CarRepository {
       throw new ApiError(e.message, e.status);
     }
   }
-
-  // public async pushImagesToCar(
-  //   _id: string,
-  //   imgsPaths: string[],
-  // ): Promise<ICar> {
-  //   try {
-  //     const updatedCar = await Car.findByIdAndUpdate(
-  //       _id,
-  //       {
-  //         $push: { img: { $each: imgsPaths } },
-  //       },
-  //       { new: true },
-  //     );
-  //     return updatedCar as unknown as ICar;
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
 
   public async deleteById(_id: string): Promise<ICar> {
     try {

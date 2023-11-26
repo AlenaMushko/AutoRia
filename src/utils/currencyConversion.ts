@@ -60,5 +60,7 @@ export async function currencyConversion(currency: string, price: number) {
     priceUAN: priceUAN + " " + ECurrency.UAN,
     priceEUR: priceEUR + " " + ECurrency.EUR,
     priceUSD: priceUSD + " " + ECurrency.USD,
+    dataUSD,
+    dataEUR,
   };
 }

@@ -2,56 +2,13 @@ import { configs } from "../config";
 import { EEmailAction } from "../enums";
 import { ApiError } from "../errors";
 import { EActionActivatedTokenTypes } from "../models";
-import { authRepository, userRepository } from "../repositories";
-import { roleRepository } from "../repositories/role.repository";
+import { authRepository, userRepository, roleRepository } from "../repositories";
 import { IUser } from "../types";
 import { emailService } from "./email.service";
 import { passwordService } from "./password.service";
 import { tokenService } from "./token.service";
 
 class UserService {
-  // public async findAll(): Promise<IUser[]> {
-  //   try {
-  //     return await userRepository.findAll();
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
-
-  // public async findWithPagination(
-  //   query: IQuery,
-  // ): Promise<IPaginationResponse<IUser>> {
-  //   try {
-  //     const queryStr = JSON.stringify(query);
-  //     const queryObg = JSON.parse(
-  //       //Ця операція використовує регулярний вираз для знаходження всіх входжень "gte", "lte", "gt" та "lt" в рядку queryStr
-  //       queryStr.replace(/\b(gte|lte|gt|lt)\b/, (match) => `$${match}`),
-  //     );
-  //     //$gte: Greater Than or Equal (Більше або Рівно)
-  //     //$lte: Less Than or Equal (Менше або Рівно)
-  //     //$gt: Greater Than (Більше)
-  //     //$lt: Less Than (Менше)
-  //     const { page, limit, sortedBy, ...searchObj } = queryObg;
-  //
-  //     const skip = +limit * (+page - 1);
-  //
-  //     const [users, allUsers] = await Promise.all([
-  //       userRepository.searchByQuery(searchObj, skip, sortedBy, limit),
-  //       userRepository.count(searchObj),
-  //     ]);
-  //
-  //     return {
-  //       page: +page,
-  //       perPage: +limit,
-  //       allItems: allUsers,
-  //       foundItems: users.length,
-  //       data: users,
-  //     };
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
-
   public async create(value: IUser): Promise<IUser> {
     try {
       const actionToken = tokenService.generateVerifyToken(
@@ -113,7 +70,7 @@ class UserService {
     }
   }
 
-  public async emailToManager(user:IUser, text: string):Promise<void>{
+  public async emailToManager(user: IUser, text: string): Promise<void> {
     try {
       await emailService.emailToManager(
         configs.MANAGER_EMAIL,
@@ -122,7 +79,7 @@ class UserService {
           userId: user._id,
           userEmail: user.email,
           name: user.name,
-          text: text
+          text: text,
         },
       );
     } catch (e) {
@@ -130,7 +87,7 @@ class UserService {
     }
   }
 
-  public async emailToAdmin(user:IUser, text: string):Promise<void>{
+  public async emailToAdmin(user: IUser, text: string): Promise<void> {
     try {
       await emailService.emailToAdmin(
         configs.ADMIN_EMAIL,
@@ -139,39 +96,13 @@ class UserService {
           userId: user._id,
           userEmail: user.email,
           name: user.name,
-          text: text
+          text: text,
         },
       );
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }
   }
-
-  // public async uploadAvatar(
-  //   avatarFile: UploadedFile,
-  //   userId: string,
-  // ): Promise<IUser> {
-  //   try {
-  //     const user = await userRepository.findById(userId);
-  //     if (user.avatar) {
-  //       await s3Service.deleteFile(user.avatar);
-  //     }
-  //
-  //     const filePath = await s3Service.uploadSingleFile(
-  //       avatarFile,
-  //       EFileTypes.User,
-  //       userId,
-  //     );
-  //
-  //     const updatedUser = await userRepository.updateByIdPatch(userId, {
-  //       avatar: filePath,
-  //     });
-  //
-  //     return updatedUser;
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
 }
 
 export const userService = new UserService();

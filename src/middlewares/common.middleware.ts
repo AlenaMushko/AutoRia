@@ -3,7 +3,6 @@ import { ObjectSchema } from "joi";
 import mongoose from "mongoose";
 
 import { ApiError } from "../errors";
-import { IQuery } from "../types";
 
 class CommonMiddleware {
   public isIdValid(fileId: string) {
@@ -32,25 +31,6 @@ class CommonMiddleware {
         }
 
         req.body = value;
-        next();
-      } catch (e) {
-        next(e);
-      }
-    };
-  }
-
-  public isQueryValid(validator: ObjectSchema) {
-    return (req: Request, res: Response, next: NextFunction) => {
-      try {
-        const query = req.query as IQuery;
-        const { error, value } = validator.validate(query);
-
-        if (error) {
-          throw new ApiError("Query is not valid", 400);
-        }
-
-        req.query = value;
-
         next();
       } catch (e) {
         next(e);

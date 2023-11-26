@@ -268,7 +268,6 @@ class EmailService {
       throw new ApiError(e.message, e.status);
     }
   }
-
 }
 
 export const emailService = new EmailService();

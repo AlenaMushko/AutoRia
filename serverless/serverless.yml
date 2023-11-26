@@ -33,12 +33,12 @@ custom:
 
 
 functions:
-  signUp:
-#    handler: src/handlers/user/signUp.handler
-#    events:
-#      - httpApi:
-#          path: /auth/sign-up
-#          method: POST
+  getAllUsers:
+    handler: src/handlers/user/getAllUsers.handler
+    events:
+      - httpApi:
+          path: /users
+          method: GET
 
   cronOldTokensRemover:
     handler: src/handlers/user/cronOldTokensRemover.handler

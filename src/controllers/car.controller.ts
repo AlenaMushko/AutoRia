@@ -4,22 +4,6 @@ import { carService } from "../services";
 import { ICar } from "../types";
 
 class CarController {
-  // public async getAll(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction,
-  // ): Promise<Response<ICar[]>> {
-  //   try {
-  //     // const cars = await carService.findWithPagination(
-  //     //   req.query as unknown as IQuery,
-  //     // );
-  //
-  //     return res.status(200).json();
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
-
   public async getAllOwner(
     req: Request,
     res: Response,
@@ -56,6 +40,7 @@ class CarController {
   ): Promise<Response<ICar>> {
     try {
       const car = res.locals.car;
+      await carService.findById(car);
 
       return res.status(200).json({ data: car });
     } catch (e) {
@@ -96,26 +81,6 @@ class CarController {
       next(e);
     }
   }
-
-  // public async uploadPhoto(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction,
-  // ): Promise<Response<ICar>> {
-  //   try {
-  //     const { _id } = res.locals.user;
-  //     const { carId } = req.params;
-  //     const imgsFile = req.files.img as UploadedFile[];
-  //
-  //     const car = await carService.uploadPhoto(imgsFile, carId, _id);
-  //
-  //     const presenterCar = carPresenter.present(car);
-  //
-  //     return res.status(200).json(presenterCar);
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
 }
 
 export const carController = new CarController();

@@ -1,45 +1,13 @@
 import { configs } from "../config";
 import { EEmailAction, ERoles, EStatus } from "../enums";
 import { ApiError } from "../errors";
-import { carRepository } from "../repositories";
-import { brandRepository } from "../repositories/brand.repository";
-import { modelRepository } from "../repositories/model.repository";
-import { roleRepository } from "../repositories/role.repository";
+import { carRepository, brandRepository, modelRepository, roleRepository } from "../repositories";
 import { ICar, ICarCreate, IUser } from "../types";
 import { currencyConversion } from "../utils/currencyConversion";
 import { profanityList } from "../utils/profanityList";
 import { emailService } from "./email.service";
 
 class CarService {
-  // public async findWithPagination(
-  //   query: IQuery,
-  // ): Promise<IPaginationResponse<ICar>> {
-  //   try {
-  //     const queryStr = JSON.stringify(query);
-  //     const queryObg = JSON.parse(
-  //       queryStr.replace(/\b(gte|lte|gt|lt)\b/, (match) => `$${match}`),
-  //     );
-  //
-  //     const { page, limit, sortedBy, ...searchObj } = queryObg;
-  //     const skip = +limit * (+page - 1);
-  //
-  //     const [cars, allUsers] = await Promise.all([
-  //       await carRepository.searchByQuery(searchObj, skip, sortedBy, limit),
-  //       await carRepository.count(searchObj),
-  //     ]);
-  //
-  //     return {
-  //       page: +page,
-  //       perPage: +limit,
-  //       allItems: allUsers,
-  //       foundItems: cars.length,
-  //       data: cars,
-  //     };
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
-
   public async getAllOwner(id: object): Promise<ICar[]> {
     try {
       return await carRepository.getAllOwner(id);
@@ -68,10 +36,8 @@ class CarService {
         status = EStatus.Active;
       }
 
-      const { priceUAN, priceEUR, priceUSD } = await currencyConversion(
-        value.currency,
-        value.price,
-      );
+      const { priceUAN, priceEUR, priceUSD, dataUSD, dataEUR } =
+        await currencyConversion(value.currency, value.price);
 
       const newCar = {
         _userId: user._id.toString(),
@@ -88,6 +54,10 @@ class CarService {
         priceUAN,
         priceEUR,
         priceUSD,
+        originalCurrency: value.currency,
+        originalPrice: value.price,
+        dataUSD,
+        dataEUR,
         count: 0,
         status,
         countSendLetters,
@@ -96,6 +66,12 @@ class CarService {
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }
+  }
+
+  public async findById(car: ICar): Promise<void> {
+    const count: number = car.count + 1;
+    const updatedCar = Object.assign(car, { count });
+    await carRepository.updateById(car._id, updatedCar);
   }
 
   public async isCarOwnerThisUser(_id: string, _userId: string): Promise<ICar> {
@@ -227,37 +203,6 @@ class CarService {
       throw new ApiError(e.message, e.status);
     }
   }
-
-  //
-  // public async uploadPhoto(
-  //   imgsFile: UploadedFile[] | UploadedFile,
-  //   carId: string,
-  //   userId: string,
-  // ): Promise<ICar> {
-  //   try {
-  //     await this.isCarOwnerThisUser(carId, userId);
-  //     let imgsPaths: string[] = [];
-  //     if (Array.isArray(imgsFile)) {
-  //       imgsPaths = await s3Service.uploadFiles(
-  //         imgsFile,
-  //         EFileTypes.Car,
-  //         userId,
-  //       );
-  //     } else {
-  //       const singleImgPath = await s3Service.uploadSingleFile(
-  //         imgsFile,
-  //         EFileTypes.Car,
-  //         userId,
-  //       );
-  //       imgsPaths.push(singleImgPath);
-  //     }
-  //
-  //     const updatedCar = await carRepository.pushImagesToCar(carId, imgsPaths);
-  //     return updatedCar;
-  //   } catch (e) {
-  //     throw new ApiError(e.message, e.status);
-  //   }
-  // }
 }
 
 export const carService = new CarService();

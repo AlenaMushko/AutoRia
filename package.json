@@ -26,9 +26,14 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.456.0",
     "@aws-sdk/client-sts": "^3.430.0",
+    "@middy/core": "^5.0.3",
+    "@middy/http-error-handler": "^5.0.3",
+    "@middy/http-event-normalizer": "^5.0.3",
+    "@middy/http-json-body-parser": "^5.0.3",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.21",
     "@types/node": "^20.9.3",
+    "aws-lambda": "^1.0.7",
     "axios": "^1.6.2",
     "bcrypt": "^5.1.1",
     "cron": "^3.1.6",
@@ -53,6 +58,7 @@
   },
   "devDependencies": {
     "@aws-sdk/types": "^3.451.0",
+    "@types/aws-lambda": "^8.10.129",
     "@types/bcrypt": "^5.0.2",
     "@types/cron": "^2.4.0",
     "@types/express-fileupload": "^1.4.4",
