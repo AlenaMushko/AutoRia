@@ -74,4 +74,8 @@ export class querySchema {
     model: this.model,
     region: this.region,
   });
+
+  static queryCount = Joi.object({
+    count: this.count,
+  });
 }

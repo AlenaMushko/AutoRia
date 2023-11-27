@@ -53,18 +53,25 @@ functions:
           path: /cars/region-price
           method: GET
 
-#  getAllQueryCars:
-#    handler: src/handlers/car/getAllQueryCars.handler
-#    events:
-#      - httpApi:
-#          path: /cars/count
-#          method: GET
+  getQueryCount:
+    handler: src/handlers/car/getQueryCount.handler
+    events:
+      - httpApi:
+          path: /cars/{carId}/count
+          method: GET
 
   cronOldTokensRemover:
     handler: src/handlers/user/cronOldTokensRemover.handler
     events:
       - schedule:
           rate: cron(0 3 ? * MON *)
+          enabled: false
+
+  cronUpdatePrice:
+    handler: src/handlers/cars/cronUpdatePrice.handler
+    events:
+      - schedule:
+          rate: cron(20 8 * * ? *)
           enabled: false
 
 #resources:
