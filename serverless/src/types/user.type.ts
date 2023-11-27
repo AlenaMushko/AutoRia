@@ -3,6 +3,10 @@ import { Document, WithId } from "mongodb";
 import { EAccounts } from "../../../src/enums";
 
 export interface IQuery {
+  [key: string]: string;
+}
+
+export interface IQueryPage {
   page: number;
   limit: number;
   sortedBy: string;

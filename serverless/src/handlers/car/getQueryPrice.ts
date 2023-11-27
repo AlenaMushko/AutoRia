@@ -1,72 +1,76 @@
-import { APIGatewayProxyEvent } from "aws-lambda";
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 import { connection } from "../../../mongo-client";
 import { ApiError } from "../../errors";
 import { isLogin } from "../../services/isLogin";
 import { validateQuery } from "../../services/isQueryValid";
-import { IPaginationResponse, IQuery, IUser } from "../../types/user.type";
 import { querySchema } from "../../validations/queryValidation";
 
 async function getQueryPrice(
   event: APIGatewayProxyEvent,
-): Promise<IPaginationResponse<IUser>> {
+): Promise<APIGatewayProxyResult> {
   try {
     const user = await isLogin(event);
-    const query = event.queryStringParameters as Partial<IQuery>;
-    let cars;
-    let allCars;
+    if (user?.account !== "premium") {
+      throw new ApiError("To make inquiries, buy premium", 404);
+    }
 
+    const query = event.queryStringParameters;
     if (query) {
-      validateQuery(query, querySchema.querySchema);
+      validateQuery(query, querySchema.queryRegion);
     }
 
-    const queryStr = JSON.stringify(query);
-    const queryObg = JSON.parse(
-      queryStr.replace(/\b(gte|lte|gt|lt)\b/, (match) => `$${match}`),
-    );
-    //$gte: Greater Than or Equal (Більше або Рівно)
-    //$lte: Less Than or Equal (Менше або Рівно)
-    //$gt: Greater Than (Більше)
-    //$lt: Less Than (Менше)
+    const brand = await connection
+      .collection("brands")
+      .find({ name: query.brand })
+      .toArray();
+    const model = await connection
+      .collection("models")
+      .find({ name: query.model })
+      .toArray();
+    const _brandId = brand[0]._id;
+    const _modelId = model[0]._id;
 
-    const {
-      page = 1,
-      limit = 2,
-      sortedBy = "createdAt",
-      ...searchObj
-    } = queryObg || {};
-    const skip = (+page - 1) * +limit;
-    console.log(user?.account, searchObj);
-    if (user?.account === "premium") {
-      [cars, allCars] = await Promise.all([
-        await connection
-          .collection("cars")
-          .find(searchObj)
-          .sort(sortedBy)
-          .skip(skip)
-          .limit(+limit)
-          .toArray(),
-        await connection.collection("cars").countDocuments(searchObj),
-      ]);
+    let cars = [];
+
+    if (query.region === "all") {
+      cars = await connection
+        .collection("cars")
+        .find({
+          _brandId,
+          _modelId,
+        })
+        .toArray();
     } else {
-      console.log("base ====");
-      [cars, allCars] = await Promise.all([
-        await connection
-          .collection("cars")
-          .find()
-          .skip(skip)
-          .limit(+limit)
-          .toArray(),
-        await connection.collection("cars").countDocuments(),
-      ]);
+      cars = await connection
+        .collection("cars")
+        .find({
+          _brandId,
+          _modelId,
+          region: query.region,
+        })
+        .toArray();
     }
+
+    const priseArr: number[] = cars.map(
+      (car) => +car.priceUAN.replace(" UAN", ""),
+    );
+    const sum = priseArr.reduce((acc: number, prise: number) => {
+      return acc + +prise;
+    }, 0);
+
+    const avaragePrice = sum / priseArr.length;
+
+    const res = {
+      brand: query.brand,
+      model: query.model,
+      avaragePrice: avaragePrice + " " + "UAN",
+      searchQuery: query.region,
+    };
 
     return {
-      page: +page,
-      perPage: +limit,
-      allItems: allCars,
-      foundItems: cars.length,
-      data: cars,
+      statusCode: 200,
+      body: JSON.stringify(res),
     };
   } catch (err) {
     throw new ApiError(err.message, err.status);

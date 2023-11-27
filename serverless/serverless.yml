@@ -46,20 +46,18 @@ functions:
           path: /cars
           method: GET
 
-#  getQueryPrice:
-#    handler: src/handlers/car/getQueryPrice.handler
-#    events:
-#      - httpApi:
-#          path: /cars/price
-#          method: GET
-
-
+  getQueryPrice:
+    handler: src/handlers/car/getQueryPrice.handler
+    events:
+      - httpApi:
+          path: /cars/region-price
+          method: GET
 
 #  getAllQueryCars:
 #    handler: src/handlers/car/getAllQueryCars.handler
 #    events:
 #      - httpApi:
-#          path: /cars
+#          path: /cars/count
 #          method: GET
 
   cronOldTokensRemover:

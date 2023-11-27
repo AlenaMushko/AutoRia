@@ -29,6 +29,13 @@ export class querySchema {
     "string.max":
       "{{#label}} length must be less than or equal to {{#limit}} characters long",
   });
+  static model = Joi.string().min(3).max(30).messages({
+    "string.base": `"model" should be a type of 'text'`,
+    "string.min":
+      "{{#label}} length must be at least {{#limit}} characters long",
+    "string.max":
+      "{{#label}} length must be less than or equal to {{#limit}} characters long",
+  });
   static year = Joi.number().integer().min(1995).max(currentYear).messages({
     "number.base": "{{#label}} must be a number",
     "string.min": "{{#label}}  must be at least {{#limit}} year",
@@ -36,9 +43,9 @@ export class querySchema {
   });
   static isNew = Joi.string().valid("true", "false");
   static region = Joi.string()
-    .valid(...Object.values(ERegion))
+    .valid("all", ...Object.values(ERegion))
     .messages({
-      "any.only": `"region" must be one of the following values: ${Object.values(
+      "any.only": `"region" must be one of the following values: all, ${Object.values(
         ERegion,
       ).join(", ")}`,
     });
@@ -50,7 +57,7 @@ export class querySchema {
     .valid(EStatus.Review, EStatus.Sold, EStatus.Active, EStatus.Inactive)
     .default(EStatus.Review);
 
-  static querySchema = Joi.object({
+  static queryAll = Joi.object({
     page: this.page,
     limit: this.limit,
     sortedBy: this.sortedBy,
@@ -60,5 +67,11 @@ export class querySchema {
     region: this.region,
     status: this.status,
     count: this.count,
+  });
+
+  static queryRegion = Joi.object({
+    brand: this.brand,
+    model: this.model,
+    region: this.region,
   });
 }
