@@ -61,13 +61,13 @@ class CarService {
         priceEUR,
         priceUSD,
         originalCurrency: value.currency,
-        originalPrice: value.price,
+        originalPrice: value.price.toString(),
         dataUSD,
         dataEUR,
         count: 0,
         status,
         countSendLetters,
-      };
+      } ;
 
       return await carRepository.create(newCar);
     } catch (e) {
@@ -174,6 +174,7 @@ class CarService {
         priceUSD,
         status,
         countSendLetters,
+        updatedAt:new Date()
       };
 
       const updateCar = Object.assign(car, newValueCar);

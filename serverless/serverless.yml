@@ -11,11 +11,7 @@ provider:
   runtime: nodejs18.x
   region: us-east-1
   environment:
-#    MAIL_QUEUE_URL: ${self:custom.mailQueue.url}
   stage: ${opt:stage, 'dev'}
-#  iamRoleStatements:
-#    - ${file(iam/SendMail.yml):SendMailAIM}
-#    - ${file(iam/MailQueueIAM.yml):MailQueueIAM}
 
 custom:
   dotenv:
@@ -26,10 +22,6 @@ custom:
     sourcemap: true
     exclude: [ 'aws-sdk' ]
     target: 'es2020'
-#    mailQueue:
-#      name: MailQueue-${self:provider.stage}
-#      arn: 'arn:aws:sqs:eu-west-1:173045083675:MailQueue-dev'
-#      url: 'https://sqs.eu-west-1.amazonaws.com/173045083675/MailQueue-dev'
 
 functions:
   getAllUsers:
@@ -68,7 +60,7 @@ functions:
           enabled: false
 
   cronUpdatePrice:
-    handler: src/handlers/cars/cronUpdatePrice.handler
+    handler: src/handlers/car/cronUpdatePrice.handler
     events:
       - schedule:
           rate: cron(20 8 * * ? *)
@@ -80,10 +72,6 @@ functions:
 #      Type: AWS::S3::Bucket
 #      Properties:
 #        BucketName: my-new-bucket
-#  Outputs:
-#    MailQueueArn: ${file(resources/MailQueue.yml):Outputs.MailQueueArn}
-#    MailQueueUrl: ${file(resources/MailQueue.yml):Outputs.MailQueueUrl}
-
 
 # you can add statements to the Lambda function's IAM Role here
 #  iam:
@@ -102,7 +90,3 @@ functions:
 #              - - "arn:aws:s3:::"
 #                - "Ref" : "ServerlessDeploymentBucket"
 #                - "/*"
-
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1

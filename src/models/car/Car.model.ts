@@ -68,6 +68,26 @@ const carSchema = new Schema(
       type: String,
       required: [true, "Price is required"],
     },
+    originalCurrency: {
+      type: String,
+      required: [true, "Currency is required"],
+    },
+    originalPrice: {
+      type: String,
+      required: [true, "Price is required"],
+    },
+    dataUSD:{
+      ccy: String,
+      base_ccy: String,
+      buy: String,
+      sale: String
+    },
+    dataEUR:{
+      ccy: String,
+      base_ccy: String,
+      buy: String,
+      sale: String
+    },
     count: {
       type: Number,
       default: 0,

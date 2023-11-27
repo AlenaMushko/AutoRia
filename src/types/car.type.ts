@@ -1,3 +1,4 @@
+
 import { Document } from "mongoose";
 
 import { ECurrency, ERegion } from "../enums";
@@ -17,6 +18,13 @@ export interface ICarCreate {
   currency: ECurrency;
 }
 
+interface IOriginal{
+  ccy: string,
+  base_ccy: string,
+  buy: string,
+  sale: string
+}
+
 export interface ICar extends Document {
   _userId: string;
   photo?: string | string[] | null;
@@ -32,6 +40,10 @@ export interface ICar extends Document {
   priceUAN: string;
   priceEUR: string;
   priceUSD: string;
+  originalCurrency: string,
+  originalPrice: string,
+  dataUSD:IOriginal,
+  dataEUR:IOriginal,
   count: number;
   status: string;
   countSendLetters: number;

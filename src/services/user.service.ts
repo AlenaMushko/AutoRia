@@ -56,7 +56,7 @@ class UserService {
       });
       const _roleId: string = _id.toString();
       const lastVisited = new Date();
-      const updatedValue = { ...value, _roleId, lastVisited };
+      const updatedValue = { ...value, _roleId, lastVisited, updatedAt:new Date()};
       const updatedUser = Object.assign(user, updatedValue);
 
       return await userRepository.updateById(userId, updatedUser);
