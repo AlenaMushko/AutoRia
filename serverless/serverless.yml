@@ -46,6 +46,15 @@ functions:
           path: /cars
           method: GET
 
+#  getQueryPrice:
+#    handler: src/handlers/car/getQueryPrice.handler
+#    events:
+#      - httpApi:
+#          path: /cars/price
+#          method: GET
+
+
+
 #  getAllQueryCars:
 #    handler: src/handlers/car/getAllQueryCars.handler
 #    events:

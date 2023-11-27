@@ -33,7 +33,7 @@ const carSchema = new Schema(
       required: [true, "Model is required"],
     },
     year: {
-      type: Number,
+      type: String,
       min: [1995, "Year min 1995"],
       max: [currentYear, `Year max ${currentYear}`],
     },
@@ -43,7 +43,7 @@ const carSchema = new Schema(
       max: [500, "description max 500 symbols"],
     },
     newCar: {
-      type: Boolean,
+      type: String,
       required: [true, "Is car new?"],
     },
     region: {

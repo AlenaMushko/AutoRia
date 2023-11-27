@@ -7,7 +7,7 @@ import { validateQuery } from "../../services/isQueryValid";
 import { IPaginationResponse, IQuery, IUser } from "../../types/user.type";
 import { querySchema } from "../../validations/queryValidation";
 
-async function getAllCars(
+async function getQueryPrice(
   event: APIGatewayProxyEvent,
 ): Promise<IPaginationResponse<IUser>> {
   try {
@@ -24,6 +24,10 @@ async function getAllCars(
     const queryObg = JSON.parse(
       queryStr.replace(/\b(gte|lte|gt|lt)\b/, (match) => `$${match}`),
     );
+    //$gte: Greater Than or Equal (Більше або Рівно)
+    //$lte: Less Than or Equal (Менше або Рівно)
+    //$gt: Greater Than (Більше)
+    //$lt: Less Than (Менше)
 
     const {
       page = 1,
@@ -69,4 +73,4 @@ async function getAllCars(
   }
 }
 
-export const handler = getAllCars;
+export const handler = getQueryPrice;

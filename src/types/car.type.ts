@@ -8,9 +8,9 @@ export interface ICarCreate {
   type: string;
   brand: string;
   model: string;
-  year?: number;
+  year?: string | number;
   description?: string;
-  newCar: boolean;
+  newCar: string;
   region: ERegion;
   city?: string;
   price: number;
@@ -24,9 +24,9 @@ export interface ICar extends Document {
   type: string;
   _brandId: string;
   _modelId: string;
-  year?: number | null;
+  year?: string;
   description?: string | null;
-  newCar: boolean;
+  newCar: string;
   region: ERegion;
   city?: string | null;
   priceUAN: string;

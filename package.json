@@ -7,7 +7,7 @@
     "start": "rimraf dist && tsc-watch --onSuccess 'npm run watch:server'",
     "watch:server": "nodemon 'src/app.ts' --watch './src'",
     "lint": "eslint 'src/**/*.{js,ts,tsx}'",
-    "lint:fix": "eslint 'src/**/*.{js,ts,tsx}' --fix",
+    "lint:fix": "eslint 'src/**/*.{js,ts,tsx}' 'serverless/src/**/*.{js,ts,tsx}' --fix",
     "start:offline": "cd serverless sls offline",
     "deploy": "cd serverless && sls deploy",
     "test": "echo \"Error: no test specified\" && exit 1"

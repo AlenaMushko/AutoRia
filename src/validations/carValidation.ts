@@ -27,12 +27,12 @@ export class carSchema {
     "string.max":
       "{{#label}} length must be less than or equal to {{#limit}} characters long",
   });
-  static year = Joi.number().integer().min(1995).max(currentYear).messages({
+  static year = Joi.number().min(1995).max(currentYear).messages({
     "number.base": "{{#label}} must be a number",
     "string.min": "{{#label}}  must be at least {{#limit}} year",
     "string.max": "{{#label}} must be less than or equal to {{#limit}} year",
   });
-  static isNew = Joi.boolean();
+  static isNew = Joi.string().valid("true", "false");
   static region = Joi.string()
     .valid(...Object.values(ERegion))
     .messages({
@@ -98,10 +98,4 @@ export class carSchema {
     price: this.price,
     currency: this.currency,
   }).or("description", "region", "city", "price", "currency");
-
-  // static queryCarSchema = Joi.object({
-  //   page: this.page,
-  //   limit: this.limit,
-  //   sortedBy: this.sortedBy,
-  // });
 }

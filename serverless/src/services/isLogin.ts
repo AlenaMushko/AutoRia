@@ -1,7 +1,7 @@
-import {  ObjectId, WithId } from "mongodb";
 import { APIGatewayEvent } from "aws-lambda";
 import { JwtPayload } from "jsonwebtoken";
 import * as jwt from "jsonwebtoken";
+import { ObjectId, WithId } from "mongodb";
 
 import { connection } from "../../mongo-client";
 import { ApiError } from "../errors";
@@ -9,8 +9,7 @@ import { IUser } from "../types/user.type";
 
 const tokenSecret = process.env.ACCESS_TOKEN_SECRET;
 
-export async function isLogin( event: APIGatewayEvent,
-): Promise<WithId<IUser>> {
+export async function isLogin(event: APIGatewayEvent): Promise<WithId<IUser>> {
   try {
     const authorization = event.headers.authorization;
 
@@ -26,9 +25,13 @@ export async function isLogin( event: APIGatewayEvent,
     const { userId } = jwt.verify(token, tokenSecret) as JwtPayload;
 
     const [user, tokenModel] = await Promise.all([
-      await connection.collection('users').findOne({_id: new ObjectId(userId)}),
-      await connection.collection('tokens').findOne({_userId: new ObjectId(userId)})
-    ])
+      await connection
+        .collection("users")
+        .findOne({ _id: new ObjectId(userId) }),
+      await connection
+        .collection("tokens")
+        .findOne({ _userId: new ObjectId(userId) }),
+    ]);
 
     if (!user || !tokenModel) {
       throw new ApiError("Token not valid", 401);

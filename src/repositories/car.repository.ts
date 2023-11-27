@@ -15,7 +15,10 @@ class CarRepository {
 
   public async create(value: Partial<ICar>): Promise<ICar> {
     try {
-      return (await Car.create({ ...value })) as unknown as ICar;
+      console.log(typeof value.year);
+      const car = (await Car.create({ ...value })) as unknown as ICar;
+      console.log(typeof car.year);
+      return car;
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }

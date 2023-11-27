@@ -25,6 +25,7 @@ class CarService {
     try {
       const { _id: brandId } = await brandRepository.findOne(value.brand);
       const { _id: modelId } = await modelRepository.findOne(value.model);
+      const year = value.year.toString();
       let countSendLetters = 0;
       let status;
 
@@ -51,9 +52,9 @@ class CarService {
         type: value.type,
         _brandId: brandId.toString(),
         _modelId: modelId.toString(),
-        year: value.year || null,
+        year: year || null,
         description: value.description || null,
-        newCar: value.newCar,
+        newCar: value.newCar.toString(),
         region: value.region,
         city: value.city || null,
         priceUAN,
@@ -67,6 +68,7 @@ class CarService {
         status,
         countSendLetters,
       };
+
       return await carRepository.create(newCar);
     } catch (e) {
       throw new ApiError(e.message, e.status);

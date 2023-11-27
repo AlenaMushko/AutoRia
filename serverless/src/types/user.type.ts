@@ -1,4 +1,5 @@
-import { WithId, Document } from 'mongodb';
+import { Document, WithId } from "mongodb";
+
 import { EAccounts } from "../../../src/enums";
 
 export interface IQuery {
