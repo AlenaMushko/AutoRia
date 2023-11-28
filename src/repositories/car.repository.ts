@@ -79,7 +79,6 @@ class CarRepository {
       throw new ApiError(e.message, e.status);
     }
   }
-
 }
 
 export const carRepository = new CarRepository();

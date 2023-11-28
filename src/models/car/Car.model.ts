@@ -15,9 +15,6 @@ const carSchema = new Schema(
     photo: {
       type: [String],
     },
-    video: {
-      type: [String],
-    },
     type: {
       type: String,
       required: [true, "Type is required"],
@@ -76,17 +73,17 @@ const carSchema = new Schema(
       type: String,
       required: [true, "Price is required"],
     },
-    dataUSD:{
+    dataUSD: {
       ccy: String,
       base_ccy: String,
       buy: String,
-      sale: String
+      sale: String,
     },
-    dataEUR:{
+    dataEUR: {
       ccy: String,
       base_ccy: String,
       buy: String,
-      sale: String
+      sale: String,
     },
     count: {
       type: Number,

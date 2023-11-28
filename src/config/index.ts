@@ -1,2 +1,2 @@
 export { configs } from "./config";
-export * from './avatar.config';
+export * from "./avatar.config";

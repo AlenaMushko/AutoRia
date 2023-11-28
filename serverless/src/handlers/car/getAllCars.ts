@@ -73,7 +73,7 @@ async function getAllCars(
   } catch (err) {
     if (err instanceof ApiError) {
       return myError(err.message, err.status);
-    } else{
+    } else {
       throw new ApiError(err.message, err.status);
     }
   }

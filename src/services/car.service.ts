@@ -1,4 +1,5 @@
 import { UploadedFile } from "express-fileupload";
+
 import { configs } from "../config";
 import { EEmailAction, EFileTypes, ERoles, EStatus } from "../enums";
 import { ApiError } from "../errors";
@@ -50,7 +51,6 @@ class CarService {
       const newCar = {
         _userId: user._id.toString(),
         photo: value.photo || [],
-        video: value.video || [],
         type: value.type,
         _brandId: brandId.toString(),
         _modelId: modelId.toString(),
@@ -69,7 +69,7 @@ class CarService {
         count: 0,
         status,
         countSendLetters,
-      } ;
+      };
 
       return await carRepository.create(newCar);
     } catch (e) {
@@ -176,7 +176,7 @@ class CarService {
         priceUSD,
         status,
         countSendLetters,
-        updatedAt:new Date()
+        updatedAt: new Date(),
       };
 
       const updateCar = Object.assign(car, newValueCar);
@@ -243,8 +243,6 @@ class CarService {
       throw new ApiError(e.message, e.status);
     }
   }
-
-
 }
 
 export const carService = new CarService();

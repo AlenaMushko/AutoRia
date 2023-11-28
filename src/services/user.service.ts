@@ -1,4 +1,5 @@
 import { UploadedFile } from "express-fileupload";
+
 import { configs } from "../config";
 import { EEmailAction, EFileTypes } from "../enums";
 import { ApiError } from "../errors";
@@ -58,7 +59,12 @@ class UserService {
       });
       const _roleId: string = _id.toString();
       const lastVisited = new Date();
-      const updatedValue = { ...value, _roleId, lastVisited, updatedAt:new Date()};
+      const updatedValue = {
+        ...value,
+        _roleId,
+        lastVisited,
+        updatedAt: new Date(),
+      };
       const updatedUser = Object.assign(user, updatedValue);
 
       return await userRepository.updateById(userId, updatedUser);

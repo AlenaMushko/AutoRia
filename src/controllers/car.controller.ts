@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { UploadedFile } from "express-fileupload";
-import { carPresenter } from "../presenters";
 
+import { carPresenter } from "../presenters";
 import { carService } from "../services";
 import { ICar } from "../types";
 

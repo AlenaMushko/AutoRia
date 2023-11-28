@@ -14,7 +14,7 @@ async function getQueryCount(
       throw new ApiError("To make inquiries, buy premium", 404);
     }
 
-    const { carId }  = event.pathParameters || {};
+    const { carId } = event.pathParameters || {};
 
     const car = await connection
       .collection("cars")
@@ -35,7 +35,7 @@ async function getQueryCount(
   } catch (err) {
     if (err instanceof ApiError) {
       return myError(err.message, err.status);
-    } else{
+    } else {
       throw new ApiError(err.message, err.status);
     }
   }
