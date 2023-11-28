@@ -65,13 +65,15 @@ class CarRepository {
     imgsPaths: string[],
   ): Promise<ICar> {
     try {
+      console.log(_id, imgsPaths);
       const updatedCar = await Car.findByIdAndUpdate(
         _id,
         {
-          $push: { img: { $each: imgsPaths } },
+          $push: { photo: { $each: imgsPaths } },
         },
         { new: true },
       );
+
       return updatedCar as unknown as ICar;
     } catch (e) {
       throw new ApiError(e.message, e.status);

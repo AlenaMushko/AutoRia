@@ -49,8 +49,8 @@ class CarService {
 
       const newCar = {
         _userId: user._id.toString(),
-        photo: value.photo || null,
-        video: value.video || null,
+        photo: value.photo || [],
+        video: value.video || [],
         type: value.type,
         _brandId: brandId.toString(),
         _modelId: modelId.toString(),
