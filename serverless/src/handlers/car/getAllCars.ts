@@ -2,7 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 import { ICar } from "../../../../src/types";
 import { connection } from "../../../mongo-client";
-import { ApiError } from "../../errors";
+import { ApiError, myError } from "../../errors";
 import { isLogin } from "../../services/isLogin";
 import { validateQuery } from "../../services/isQueryValid";
 import { IPaginationResponse, IQueryPage } from "../../types/user.type";
@@ -71,7 +71,11 @@ async function getAllCars(
       body: JSON.stringify(res),
     };
   } catch (err) {
-    throw new ApiError(err.message, err.status);
+    if (err instanceof ApiError) {
+      return myError(err.message, err.status);
+    } else{
+      throw new ApiError(err.message, err.status);
+    }
   }
 }
 

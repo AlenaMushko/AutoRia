@@ -13,16 +13,6 @@ provider:
   environment:
   stage: ${opt:stage, 'dev'}
 
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "s3:PutObject"
-        - "s3:GetObject"
-        - "s3:DeleteObject"
-      Resource:
-        - "arn:aws:s3:::your-user-avatars-bucket-name/*"
-        - "arn:aws:s3:::your-cars-images-videos-bucket-name/*"
-
 custom:
   dotenv:
     path: ../.env
@@ -62,27 +52,6 @@ functions:
           path: /cars/{carId}/count
           method: GET
 
-  uploadFileAvatar:
-    handler: src/handlers/user/uploadFileAvatar.handler
-    events:
-      - httpApi:
-          path: /users/{userId}/avatar
-          method: POST
-
-#  uploadFileCar:
-#    handler: src/handlers/car/uploadFileCar.handler
-#    events:
-#      - httpApi:
-#          path: /cars/{carId}/photo
-#          method: POST
-#
-#  uploadVideoCar:
-#    handler: src/handlers/car/uploadVideoCar.handler
-#    events:
-#      - httpApi:
-#          path: /cars/{carId}/video
-#          method: POST
-
   cronOldTokensRemover:
     handler: src/handlers/user/cronOldTokensRemover.handler
     events:
@@ -96,11 +65,3 @@ functions:
       - schedule:
           rate: cron(20 8 * * ? *)
           enabled: false
-
-resources:
-  Resources:
-    NewResource:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: auto-ria-serverless
-

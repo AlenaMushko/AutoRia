@@ -5,3 +5,9 @@ export class ApiError extends Error {
     this.status = status;
   }
 }
+export function myError ( message:string, status:number){
+  return {
+    statusCode: status,
+    body: JSON.stringify({ error: message })
+  };
+}

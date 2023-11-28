@@ -2,7 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { ObjectId } from "mongodb";
 
 import { connection } from "../../../mongo-client";
-import { ApiError } from "../../errors";
+import { ApiError, myError } from "../../errors";
 import { isLogin } from "../../services/isLogin";
 
 async function getQueryCount(
@@ -33,7 +33,11 @@ async function getQueryCount(
       body: JSON.stringify(res),
     };
   } catch (err) {
-    throw new ApiError(err.message, err.status);
+    if (err instanceof ApiError) {
+      return myError(err.message, err.status);
+    } else{
+      throw new ApiError(err.message, err.status);
+    }
   }
 }
 

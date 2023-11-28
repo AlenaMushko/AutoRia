@@ -2,7 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 import { connection } from "../../../mongo-client";
 import { queryConstants } from "../../constants";
-import { ApiError } from "../../errors";
+import { ApiError, myError } from "../../errors";
 import { validateQuery } from "../../services/isQueryValid";
 import { IPaginationResponse, IQueryPage, IUser } from "../../types/user.type";
 import { querySchema } from "../../validations/queryValidation";
@@ -82,7 +82,11 @@ async function getAllUsers(
       body: JSON.stringify(res),
     };
   } catch (err) {
-    throw new ApiError(err.message, err.status);
+    if (err instanceof ApiError) {
+      return myError(err.message, err.status);
+    } else{
+      throw new ApiError(err.message, err.status);
+    }
   }
 }
 
