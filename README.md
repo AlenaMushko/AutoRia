@@ -4,39 +4,39 @@
 #### The application caters to various user roles and functions, including both basic and premium accounts.
 
 ## Getting Started
-### Ensure AWS CLI is installed on your system. If not, download and install it from https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
-### Node.js version 18.x or later should be installed. Download it from the official Node.js website.
-### Serverless framework installed globally. [npm install -g serverless]
-### Run AWS Configure Command:  [aws configure]
-### Enter Credentials:
+##### Ensure AWS CLI is installed on your system. If not, download and install it from https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+##### Node.js version 18.x or later should be installed. Download it from the official Node.js website.
+##### Serverless framework installed globally. [npm install -g serverless]
+##### Run AWS Configure Command:  [aws configure]
+##### Enter Credentials:
 ##### AWS Access Key ID: Enter AWS_S3_ACCESS_KEY
 ##### AWS Secret Access Key: Enter AWS_S3_SECRET_ACCESS_KEY
 ##### Default Region Name: eu-west-1
 ##### Default Output Format: json (You can leave this blank)
 
 ### Clone the repository:
-### git clone https://github.com/AlenaMushko/AutoRia
-### cd AutoRia
-### npm install
-### npm run start
+##### git clone https://github.com/AlenaMushko/AutoRia
+##### cd AutoRia
+##### npm install
+##### npm run start
 
-### cd AutoRia/serverless
-### sls deploy --stage dev
+##### cd AutoRia/serverless
+##### sls deploy --stage dev
 
-## Technical Stack
-###### Runtime: AWS Lambda with Node.js v18.x.
-###### Programming Language: TypeScript.
-###### Bundling and Transpilation: esbuild.
-###### Infrastructure as Code: Serverless Framework.
-###### Database: MongoDB.
-###### Caching: Node-cache.
-###### Authentication and Security: bcrypt, JSON Web Tokens (JWT).
-###### Email Services: Nodemailer, Express Handlebars, AWS SES.
-###### File Uploads: Express Fileupload.
-###### API Documentation: Swagger UI Express.
-###### Code Quality and Linting: ESLint with Prettier, TypeScript ESLint.
-###### Development Tools: Nodemon, ts-watch.
-###### Additional Libraries: @middy/*, dayjs, joi.
+## Technical Stac
+##### Runtime: AWS Lambda with Node.js v18.x.
+##### Programming Language: TypeScript.
+##### Bundling and Transpilation: esbuild
+##### Infrastructure as Code: Serverless Framework.
+##### Database: MongoDB.
+##### Caching: Node-cache.
+##### Authentication and Security: bcrypt, JSON Web Tokens (JWT).
+##### Email Services: Nodemailer, Express Handlebars, AWS SES.
+##### File Uploads: Express Fileupload.
+##### API Documentation: Swagger UI Express.
+##### Code Quality and Linting: ESLint with Prettier, TypeScript ESLint.
+##### Development Tools: Nodemon, ts-watch.
+##### Additional Libraries: @middy/*, dayjs, joi.
 
 ## Project Structure
 ### src/handlers/ - Contains Lambda function handlers.
