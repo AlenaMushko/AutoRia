@@ -49,6 +49,9 @@ const userSchema = new Schema(
       default: Date.now,
       required: true,
     },
+    avatar: {
+      type: String,
+    },
   },
   {
     timestamps: true,

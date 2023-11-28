@@ -1,5 +1,6 @@
+import { UploadedFile } from "express-fileupload";
 import { configs } from "../config";
-import { EEmailAction, ERoles, EStatus } from "../enums";
+import { EEmailAction, EFileTypes, ERoles, EStatus } from "../enums";
 import { ApiError } from "../errors";
 import {
   brandRepository,
@@ -11,6 +12,7 @@ import { ICar, ICarCreate, IUser } from "../types";
 import { currencyConversion } from "../utils/currencyConversion";
 import { profanityList } from "../utils/profanityList";
 import { emailService } from "./email.service";
+import { s3Service } from "./s3.service";
 
 class CarService {
   public async getAllOwner(id: object): Promise<ICar[]> {
@@ -211,6 +213,38 @@ class CarService {
       throw new ApiError(e.message, e.status);
     }
   }
+
+  public async uploadPhoto(
+    imgsFile: UploadedFile[] | UploadedFile,
+    carId: string,
+    userId: string,
+  ): Promise<ICar> {
+    try {
+      await this.isCarOwnerThisUser(carId, userId);
+      let imgsPaths: string[] = [];
+      if (Array.isArray(imgsFile)) {
+        imgsPaths = await s3Service.uploadFiles(
+          imgsFile,
+          EFileTypes.Car,
+          userId,
+        );
+      } else {
+        const singleImgPath = await s3Service.uploadSingleFile(
+          imgsFile,
+          EFileTypes.Car,
+          userId,
+        );
+        imgsPaths.push(singleImgPath);
+      }
+
+      const updatedCar = await carRepository.pushImagesToCar(carId, imgsPaths);
+      return updatedCar;
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+
+
 }
 
 export const carService = new CarService();

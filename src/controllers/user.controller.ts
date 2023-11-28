@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from "express";
+import { UploadedFile } from "express-fileupload";
+import { userPresenter } from "../presenters";
 
 import { userService } from "../services";
 import { IUser } from "../types";
@@ -105,6 +107,25 @@ class UserController {
       const user = res.locals.user;
       await userService.emailToAdmin(user, req.body.text);
       return res.status(200).json({ message: "email is sending for manager" });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async uploadAvatar(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response<IUser>> {
+    try {
+      const { userId } = req.params;
+      const avatar = req.files.avatar as UploadedFile;
+
+      const user = await userService.uploadAvatar(avatar, userId);
+
+      const presenterUser = userPresenter.present(user);
+
+      return res.status(200).json(presenterUser);
     } catch (e) {
       next(e);
     }

@@ -12,6 +12,7 @@ export interface IUser extends Document {
   verify: boolean;
   lastVisited: Date;
   actionToken?: string;
+  avatar?:string;
 }
 
 export interface IRole extends Document {

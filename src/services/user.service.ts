@@ -1,5 +1,6 @@
+import { UploadedFile } from "express-fileupload";
 import { configs } from "../config";
-import { EEmailAction } from "../enums";
+import { EEmailAction, EFileTypes } from "../enums";
 import { ApiError } from "../errors";
 import { EActionActivatedTokenTypes } from "../models";
 import {
@@ -10,6 +11,7 @@ import {
 import { IUser } from "../types";
 import { emailService } from "./email.service";
 import { passwordService } from "./password.service";
+import { s3Service } from "./s3.service";
 import { tokenService } from "./token.service";
 
 class UserService {
@@ -103,6 +105,32 @@ class UserService {
           text: text,
         },
       );
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+
+  public async uploadAvatar(
+    avatarFile: UploadedFile,
+    userId: string,
+  ): Promise<IUser> {
+    try {
+      const user = await userRepository.findById(userId);
+      if (user.avatar) {
+        await s3Service.deleteFile(user.avatar);
+      }
+
+      const filePath = await s3Service.uploadSingleFile(
+        avatarFile,
+        EFileTypes.User,
+        userId,
+      );
+
+      const updatedUser = await userRepository.updateByIdPatch(userId, {
+        avatar: filePath,
+      });
+
+      return updatedUser;
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }

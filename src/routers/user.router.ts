@@ -8,6 +8,7 @@ import {
   commonMiddleware,
   userMiddleware,
 } from "../middlewares";
+import { fileMiddleware } from "../middlewares/file.middleware";
 import { userSchema } from "../validations";
 import { emailSchema } from "../validations/emailValidation";
 
@@ -40,6 +41,13 @@ router.post(
   authenticateMiddleware.isLogin,
   commonMiddleware.isBodyValid(emailSchema.create),
   userController.buyPremium,
+);
+
+router.post(
+  "/:userId/avatar",
+  commonMiddleware.isIdValid("userId"),
+  fileMiddleware.isAvatarValid,
+  userController.uploadAvatar,
 );
 
 router.get(

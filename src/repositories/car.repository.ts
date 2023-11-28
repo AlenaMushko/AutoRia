@@ -59,6 +59,25 @@ class CarRepository {
       throw new ApiError(e.message, e.status);
     }
   }
+
+  public async pushImagesToCar(
+    _id: string,
+    imgsPaths: string[],
+  ): Promise<ICar> {
+    try {
+      const updatedCar = await Car.findByIdAndUpdate(
+        _id,
+        {
+          $push: { img: { $each: imgsPaths } },
+        },
+        { new: true },
+      );
+      return updatedCar as unknown as ICar;
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+
 }
 
 export const carRepository = new CarRepository();

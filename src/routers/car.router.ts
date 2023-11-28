@@ -6,6 +6,7 @@ import {
   carMiddleware,
   commonMiddleware,
 } from "../middlewares";
+import { fileMiddleware } from "../middlewares/file.middleware";
 import { carSchema } from "../validations/carValidation";
 
 const router = Router();
@@ -19,6 +20,15 @@ router.post(
   carMiddleware.userAccount,
   commonMiddleware.isBodyValid(carSchema.create),
   carController.create,
+);
+
+router.post(
+  "/:carId/img",
+  authenticateMiddleware.isLogin,
+  commonMiddleware.isIdValid("carId"),
+  carMiddleware.findByIdByThrow,
+  fileMiddleware.isImgValid,
+  carController.uploadPhoto,
 );
 
 router.get(
