@@ -59,6 +59,7 @@ class AuthRepository {
       throw new ApiError(e.message, e.status);
     }
   }
+
   public async findOne(email: string): Promise<IUser> {
     try {
       return (await User.findOne({ email })) as unknown as IUser;
